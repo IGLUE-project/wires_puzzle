@@ -12,40 +12,56 @@ import MainScreen from "./MainScreen.jsx";
 import ControlPanel from "./ControlPanel.jsx";
 
 let escapp;
-const wires = [
-  {
-    target: 2,
-    color: "#3abf19",
-    label: "👽",
-    image: "",
-    targetLabel: "target 2",
-    targetImage: "/src/assets/images/circulo.png",
-  },
-  {
-    target: 0,
-    color: "#c70000",
-    label: "cable 1",
-    image: "/src/assets/images/estrella.svg",
-    targetLabel: "target 0",
-    targetImage: "",
-  },
-  {
-    target: 3,
-    color: "#0021c7",
-    label: "cable 2",
-    image: "",
-    targetLabel: "target 3",
-    targetImage: "",
-  },
-  {
-    target: 1,
-    color: "#c700b5",
-    label: "cable 3",
-    image: "",
-    targetLabel: "target 1",
-    targetImage: "",
-  },
-];
+const initialConfig = {
+  wires: [
+    {
+      color: "#3abf19",
+      areaColor: "",
+      label: "👽",
+      image: "",
+    },
+    {
+      color: "#c70000",
+      areaColor: "",
+      label: "cable 1",
+      image: "/src/assets/images/estrella.svg",
+    },
+    {
+      color: "#0021c7",
+      areaColor: "#0021c7",
+      label: "cable 2",
+      image: "",
+    },
+    {
+      color: "#c700b5",
+      areaColor: "",
+      label: "cable 3",
+      image: "",
+    },
+  ],
+  target: [
+    {
+      areaColor: "#3abf19",
+      label: "5",
+      image: "",
+    },
+    {
+      areaColor: "#c70000",
+      label: "tarjet 1",
+      image: "",
+    },
+    {
+      areaColor: "#0021c7",
+      label: "target 2",
+      image: "/src/assets/images/circulo.png",
+    },
+    {
+      areaColor: "#c700b5",
+      label: "tarjet 3",
+      image: "",
+    },
+  ],
+};
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -174,7 +190,7 @@ export default function App() {
     <div id="firstnode">
       <audio id="audio_failure" src="sounds/wrong.wav" autostart="false" preload="auto" />
       <div className={`main-background ${fail ? "fail" : ""}`}>
-        <MainScreen show={screen === KEYPAD_SCREEN} wires={wires} />
+        <MainScreen show={screen === KEYPAD_SCREEN} initialConfig={initialConfig} />
         <ControlPanel show={screen === CONTROL_PANEL_SCREEN} onOpenScreen={onOpenScreen} />
       </div>
     </div>
