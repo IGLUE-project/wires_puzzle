@@ -11,7 +11,7 @@ const canvasHeight = 1000;
 let mouseX = 0;
 let mouseY = 0;
 
-const FixWiringGame = ({ initialConfig }) => {
+const FixWiringGame = ({ initialConfig, solvePuzzle }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -159,14 +159,15 @@ const FixWiringGame = ({ initialConfig }) => {
     // Detectar cuando se inicia la conexión
     canvas.addEventListener("mousedown", () => {
       const index = Math.floor(mouseX / WAWidth);
+      const tIndex = conexions.indexOf(index);
       if (mouseY > canvasHeight - WAHeight - 35) {
         if (conexions[index] !== null) {
           conexions[index] = null;
         }
         selectedWireIndex = index;
-      } else if (mouseY < WAHeight + 35 && conexions.indexOf(index) !== null) {
-        selectedWireIndex = conexions.indexOf(index);
-        conexions[conexions.indexOf(index)] = null;
+      } else if (mouseY < WAHeight + 35 && tIndex !== null && tIndex !== -1) {
+        selectedWireIndex = tIndex;
+        conexions[tIndex] = null;
       }
     });
 
@@ -174,14 +175,28 @@ const FixWiringGame = ({ initialConfig }) => {
     canvas.addEventListener("mouseup", () => {
       if (mouseY < WAHeight + 35) {
         const index = Math.floor(mouseX / WAWidth);
-        if (conexions.indexOf(index) !== null) {
-          conexions[conexions.indexOf(index)] = null;
+        const tIndex = conexions.indexOf(index);
+
+        if (tIndex !== null && tIndex !== -1) {
+          conexions[tIndex] = null;
         }
-        conexions[selectedWireIndex] = index;
-        gameCompleted = conexions.filter((a) => a).length === wires.length;
+        if (selectedWireIndex !== -1) {
+          conexions[selectedWireIndex] = index;
+          gameCompleted = checkGameFinish();
+        }
       }
       selectedWireIndex = -1;
     });
+
+    function checkGameFinish() {
+      for (let i = 0; i < conexions.length; i++) {
+        if (conexions[i] === null) {
+          return false;
+        }
+      }
+      solvePuzzle(conexions);
+      return true;
+    }
 
     // Bucle de animación para actualizar la pantalla
     function loop() {

@@ -7,7 +7,7 @@ import { GLOBAL_CONFIG } from "../config/config.js";
 import * as I18n from "../vendors/I18n.js";
 import * as LocalStorage from "../vendors/Storage.js";
 
-import { PAINTING_SCREEN, KEYPAD_SCREEN, SAFE_OPEN_SCREEN, CONTROL_PANEL_SCREEN } from "../constants/constants.jsx";
+import { CONTROL_PANEL_SCREEN, KEYPAD_SCREEN } from "../constants/constants.jsx";
 import MainScreen from "./MainScreen.jsx";
 import ControlPanel from "./ControlPanel.jsx";
 
@@ -66,7 +66,7 @@ const initialConfig = {
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [screen, setScreen] = useState(CONTROL_PANEL_SCREEN);
-  const [prevScreen, setPrevScreen] = useState(PAINTING_SCREEN);
+  const [prevScreen, setPrevScreen] = useState(CONTROL_PANEL_SCREEN);
   const [fail, setFail] = useState(false);
 
   useEffect(() => {
@@ -85,38 +85,35 @@ export default function App() {
       LocalStorage.removeSetting("played_door");
     };
     escapp = new ESCAPP(GLOBAL_CONFIG.escapp);
-    // escapp.validate((success, er_state) => {
-    //   console.log("ESCAPP validation", success, er_state);
-    //   try {
-    //     if (success) {
-    //       //ha ido bien, restauramos el estado recibido
-    //       restoreState(er_state);
-    //     }
-    //   } catch (e) {
-    //     console.error(e);
-    //   }
-    // });
+    escapp.validate((success, er_state) => {
+      console.log("ESCAPP validation", success, er_state);
+      try {
+        if (success) {
+          //ha ido bien, restauramos el estado recibido
+          restoreState(er_state);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    });
 
     setLoading(false);
   }, []);
 
-  function solvePuzzle() {
+  const solvePuzzle = (solution) => {
     //XXX DUDA: a este método solo se le llama cuando sale el boton continue, que es cuando se han resuelto todos los puzzles
 
     //XXX DUDA: en el de MalditaER se guarda en localstorage con la clave "safebox_password", quizá sirva por si se vuelve a recargar o se vuelve a la app, que el estado se pierde.
     //lo mejor seria guardar en localstorage todo el estado de la app cuando algo cambia y asi al volver a cargar la app se restaura el estado en el useEffect
-
-    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, solutionstr, {}, (success) => {
+    console.log(solution);
+    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solution), {}, (success) => {
       if (!success) {
-        setFail(true);
-        setTimeout(() => {
-          setFail(false);
-        }, 700);
+        // alert("ta mal");
       } else {
-        alert("ta bien");
+        // alert("ta bien");
       }
     });
-  }
+  };
 
   function reset() {
     escapp.reset();
@@ -129,8 +126,8 @@ export default function App() {
       let lastPuzzleSolved = Math.max.apply(null, er_state.puzzlesSolved);
       if (lastPuzzleSolved >= GLOBAL_CONFIG.escapp.puzzleId) {
         //puzzle superado, abrimos la caja fuerte
-        setScreen(SAFE_OPEN_SCREEN);
-        setPrevScreen(PAINTING_SCREEN);
+        setScreen(CONTROL_PANEL_SCREEN);
+        setPrevScreen(CONTROL_PANEL_SCREEN);
       } else {
         //puzzle no superado, miramos en localStorage en qué pantalla estábamos
         let localstateToRestore = LocalStorage.getSetting("app_state");
@@ -190,7 +187,7 @@ export default function App() {
     <div id="firstnode">
       <audio id="audio_failure" src="sounds/wrong.wav" autostart="false" preload="auto" />
       <div className={`main-background ${fail ? "fail" : ""}`}>
-        <MainScreen show={screen === KEYPAD_SCREEN} initialConfig={initialConfig} />
+        <MainScreen show={screen === KEYPAD_SCREEN} initialConfig={initialConfig} solvePuzzle={solvePuzzle} />
         <ControlPanel show={screen === CONTROL_PANEL_SCREEN} onOpenScreen={onOpenScreen} />
       </div>
     </div>
