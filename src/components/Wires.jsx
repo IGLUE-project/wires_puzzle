@@ -11,10 +11,13 @@ const canvasHeight = 1000;
 let mouseX = 0;
 let mouseY = 0;
 
-const FixWiringGame = ({ initialConfig, solvePuzzle }) => {
+const FixWiringGame = ({ initialConfig, setConnections }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    const pickWireAudio = document.getElementById("audio_pick-wire");
+    const plugWireAudio = document.getElementById("audio_plug-wire");
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     canvas.width = canvasWidth;
@@ -29,8 +32,8 @@ const FixWiringGame = ({ initialConfig, solvePuzzle }) => {
     const WAWidth = canvasWidth / wires.length;
     const WAHeight = 150;
 
-    let conexions = [];
-    wires.forEach(() => conexions.push(null));
+    let connections = [];
+    wires.forEach(() => connections.push(null));
 
     // Dibuja el estado del juego
     function drawGame() {
@@ -51,12 +54,12 @@ const FixWiringGame = ({ initialConfig, solvePuzzle }) => {
       // Dibujar los cuadros de abajo y las líneas completadas
       wires.forEach((wire, i) => {
         drawRect(wire.color, WAWidth * i, canvasHeight - WAHeight, WAWidth, WAHeight);
-        if (conexions[i] !== null) {
+        if (connections[i] !== null) {
           drawLine(
             wire.color,
             i * WAWidth + WAWidth / 2,
             canvasHeight - WAHeight,
-            conexions[i] * WAWidth + WAWidth / 2,
+            connections[i] * WAWidth + WAWidth / 2,
             WAHeight,
           );
         }
@@ -159,15 +162,16 @@ const FixWiringGame = ({ initialConfig, solvePuzzle }) => {
     // Detectar cuando se inicia la conexión
     canvas.addEventListener("mousedown", () => {
       const index = Math.floor(mouseX / WAWidth);
-      const tIndex = conexions.indexOf(index);
+      const tIndex = connections.indexOf(index);
       if (mouseY > canvasHeight - WAHeight - 35) {
-        if (conexions[index] !== null) {
-          conexions[index] = null;
+        if (connections[index] !== null) {
+          connections[index] = null;
         }
         selectedWireIndex = index;
+        pickWireAudio.play();
       } else if (mouseY < WAHeight + 35 && tIndex !== null && tIndex !== -1) {
         selectedWireIndex = tIndex;
-        conexions[tIndex] = null;
+        connections[tIndex] = null;
       }
     });
 
@@ -175,26 +179,27 @@ const FixWiringGame = ({ initialConfig, solvePuzzle }) => {
     canvas.addEventListener("mouseup", () => {
       if (mouseY < WAHeight + 35) {
         const index = Math.floor(mouseX / WAWidth);
-        const tIndex = conexions.indexOf(index);
+        const tIndex = connections.indexOf(index);
 
         if (tIndex !== null && tIndex !== -1) {
-          conexions[tIndex] = null;
+          connections[tIndex] = null;
         }
         if (selectedWireIndex !== -1) {
-          conexions[selectedWireIndex] = index;
+          connections[selectedWireIndex] = index;
           gameCompleted = checkGameFinish();
+          plugWireAudio.play();
         }
       }
       selectedWireIndex = -1;
     });
 
     function checkGameFinish() {
-      for (let i = 0; i < conexions.length; i++) {
-        if (conexions[i] === null) {
+      for (let i = 0; i < connections.length; i++) {
+        if (connections[i] === null) {
           return false;
         }
       }
-      solvePuzzle(conexions);
+      setConnections(connections);
       return true;
     }
 
@@ -207,7 +212,13 @@ const FixWiringGame = ({ initialConfig, solvePuzzle }) => {
     loop();
   }, []);
 
-  return <canvas ref={canvasRef} id="gameCanvas" />;
+  return (
+    <>
+      <canvas ref={canvasRef} id="gameCanvas" />
+      <audio id="audio_pick-wire" src="sounds/pick-wire.wav" autostart="false" preload="auto" />
+      <audio id="audio_plug-wire" src="sounds/plug-wire.mp3" autostart="false" preload="auto" />
+    </>
+  );
 };
 
 export default FixWiringGame;

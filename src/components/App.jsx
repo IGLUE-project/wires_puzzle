@@ -65,9 +65,11 @@ const initialConfig = {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [screen, setScreen] = useState(CONTROL_PANEL_SCREEN);
-  const [prevScreen, setPrevScreen] = useState(CONTROL_PANEL_SCREEN);
+  const [screen, setScreen] = useState(KEYPAD_SCREEN);
+  const [prevScreen, setPrevScreen] = useState(KEYPAD_SCREEN);
   const [fail, setFail] = useState(false);
+  const [solved, setSolved] = useState(false);
+  const [solvedTrigger, setSolvedTrigger] = useState(0);
 
   useEffect(() => {
     console.log("useEffect, lets load everything");
@@ -112,6 +114,8 @@ export default function App() {
       } else {
         // alert("ta bien");
       }
+      setSolved(success);
+      setSolvedTrigger((prev) => prev + 1);
     });
   };
 
@@ -126,8 +130,8 @@ export default function App() {
       let lastPuzzleSolved = Math.max.apply(null, er_state.puzzlesSolved);
       if (lastPuzzleSolved >= GLOBAL_CONFIG.escapp.puzzleId) {
         //puzzle superado, abrimos la caja fuerte
-        setScreen(CONTROL_PANEL_SCREEN);
-        setPrevScreen(CONTROL_PANEL_SCREEN);
+        setScreen(KEYPAD_SCREEN);
+        setPrevScreen(KEYPAD_SCREEN);
       } else {
         //puzzle no superado, miramos en localStorage en qué pantalla estábamos
         let localstateToRestore = LocalStorage.getSetting("app_state");
@@ -166,28 +170,16 @@ export default function App() {
     saveState();
   }
 
-  /*
-  //COMENTADO PORQUE NO SE USA EN EL EJEMPLO, serviría para saber si se han superado todos los puzzles 
-  // y entonces se muestra un mensaje u otro en la pantalla final
-  //
-  let puzzlesSolved = [];
-  let solvedAllPuzzles = false;
-  if(!escapp){
-    //si no esta definido escapp, es que estamos loading
-    setLoading(true);
-  } else {
-    let newestState = escapp.getNewestState();
-    puzzlesSolved = (newestState && newestState.puzzlesSolved) ? newestState.puzzlesSolved : [];
-    //en este ejemplo se han superado todos los puzzles si se han superado 3 que es el total de la ER
-    solvedAllPuzzles = newestState.puzzlesSolved.length >= 3;
-  }
-  */
-
   return (
     <div id="firstnode">
-      <audio id="audio_failure" src="sounds/wrong.wav" autostart="false" preload="auto" />
       <div className={`main-background ${fail ? "fail" : ""}`}>
-        <MainScreen show={screen === KEYPAD_SCREEN} initialConfig={initialConfig} solvePuzzle={solvePuzzle} />
+        <MainScreen
+          show={screen === KEYPAD_SCREEN}
+          initialConfig={initialConfig}
+          solvePuzzle={solvePuzzle}
+          solved={solved}
+          solvedTrigger={solvedTrigger}
+        />
         <ControlPanel show={screen === CONTROL_PANEL_SCREEN} onOpenScreen={onOpenScreen} />
       </div>
     </div>
