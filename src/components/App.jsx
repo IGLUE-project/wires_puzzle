@@ -103,12 +103,9 @@ export default function App() {
   }, []);
 
   const solvePuzzle = (solution) => {
-    //XXX DUDA: a este método solo se le llama cuando sale el boton continue, que es cuando se han resuelto todos los puzzles
-
-    //XXX DUDA: en el de MalditaER se guarda en localstorage con la clave "safebox_password", quizá sirva por si se vuelve a recargar o se vuelve a la app, que el estado se pierde.
-    //lo mejor seria guardar en localstorage todo el estado de la app cuando algo cambia y asi al volver a cargar la app se restaura el estado en el useEffect
-    console.log(solution);
-    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solution), {}, (success) => {
+    const solutionStr = solution.map((s) => s + 1).join(",");
+    console.log(solutionStr);
+    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solutionStr), {}, (success) => {
       if (!success) {
         // alert("ta mal");
       } else {
