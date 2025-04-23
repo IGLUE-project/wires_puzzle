@@ -101,7 +101,7 @@ const FixWiringGame = ({ config, setConnections }) => {
       //ctx.globalAlpha = 0.5;
       //ctx.fillStyle = color ? color : "#3b3b3b";
 
-      ctx.fillStyle = "#3b3b3b";
+      ctx.fillStyle = "#403937";
       ctx.fillRect(x, y, w, h);
       // ctx.globalAlpha = 1.0;
       ctx.strokeStyle = "black";
@@ -168,7 +168,7 @@ const FixWiringGame = ({ config, setConnections }) => {
     ctx.shadowOffsetY = 0;
 
     function drawLabel(wire, i, yPosition) {
-      ctx.fillStyle = "white";
+      ctx.fillStyle = "#e8d5b0";
       ctx.font = "50px Arial";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
