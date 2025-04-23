@@ -68,8 +68,8 @@ const initialConfig = {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [screen, setScreen] = useState(KEYPAD_SCREEN);
-  const [prevScreen, setPrevScreen] = useState(KEYPAD_SCREEN);
+  const [screen, setScreen] = useState(CONTROL_PANEL_SCREEN);
+  const [prevScreen, setPrevScreen] = useState(CONTROL_PANEL_SCREEN);
   const [fail, setFail] = useState(false);
   const [solved, setSolved] = useState(false);
   const [solvedTrigger, setSolvedTrigger] = useState(0);
@@ -91,17 +91,17 @@ export default function App() {
       LocalStorage.removeSetting("played_door");
     };
     escapp = new ESCAPP(GLOBAL_CONFIG.escapp);
-    escapp.validate((success, er_state) => {
-      console.log("ESCAPP validation", success, er_state);
-      try {
-        if (success) {
-          //ha ido bien, restauramos el estado recibido
-          restoreState(er_state);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    });
+    // escapp.validate((success, er_state) => {
+    //   console.log("ESCAPP validation", success, er_state);
+    //   try {
+    //     if (success) {
+    //       //ha ido bien, restauramos el estado recibido
+    //       restoreState(er_state);
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // });
     loadConfig(initialConfig);
 
     setLoading(false);
@@ -144,8 +144,8 @@ export default function App() {
       let lastPuzzleSolved = Math.max.apply(null, er_state.puzzlesSolved);
       if (lastPuzzleSolved >= GLOBAL_CONFIG.escapp.puzzleId) {
         //puzzle superado, abrimos la caja fuerte
-        setScreen(KEYPAD_SCREEN);
-        setPrevScreen(KEYPAD_SCREEN);
+        setScreen(CONTROL_PANEL_SCREEN);
+        setPrevScreen(CONTROL_PANEL_SCREEN);
       } else {
         //puzzle no superado, miramos en localStorage en qué pantalla estábamos
         let localstateToRestore = LocalStorage.getSetting("app_state");
