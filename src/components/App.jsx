@@ -7,7 +7,7 @@ import { GLOBAL_CONFIG } from "../config/config.js";
 import * as I18n from "../vendors/I18n.js";
 import * as LocalStorage from "../vendors/Storage.js";
 
-import { CONTROL_PANEL_SCREEN, KEYPAD_SCREEN } from "../constants/constants.jsx";
+import { CONTROL_PANEL_SCREEN, KEYPAD_SCREEN, THEME_ASSETS, THEMES } from "../constants/constants.jsx";
 import MainScreen from "./MainScreen.jsx";
 import ControlPanel from "./ControlPanel.jsx";
 
@@ -15,25 +15,25 @@ let escapp;
 const initialConfig = {
   wires: [
     {
-      color: "#3abf19",
+      color: "#91933D",
       areaColor: "",
       label: "👽",
       image: "",
     },
     {
-      color: "#c70000",
+      color: "#645B90",
       areaColor: "",
       label: "cable 1",
       image: "/src/assets/images/estrella.svg",
     },
     {
-      color: "#0021c7",
+      color: "#9C5425",
       areaColor: "#0021c7",
       label: "cable 2",
       image: "",
     },
     {
-      color: "#c700b5",
+      color: "#CD717C",
       areaColor: "",
       label: "cable 3",
       image: "",
@@ -47,7 +47,7 @@ const initialConfig = {
     },
     {
       areaColor: "#c70000",
-      label: "tarjet 1",
+      label: "target 1",
       image: "",
     },
     {
@@ -57,10 +57,13 @@ const initialConfig = {
     },
     {
       areaColor: "#c700b5",
-      label: "tarjet 3",
+      label: "target 3",
       image: "",
     },
   ],
+  config: {
+    theme: THEMES.BASIC,
+  },
 };
 
 export default function App() {
@@ -68,6 +71,9 @@ export default function App() {
   const [screen, setScreen] = useState(CONTROL_PANEL_SCREEN);
   const [prevScreen, setPrevScreen] = useState(CONTROL_PANEL_SCREEN);
   const [fail, setFail] = useState(false);
+  const [solved, setSolved] = useState(false);
+  const [solvedTrigger, setSolvedTrigger] = useState(0);
+  const [config, setConfig] = useState({});
 
   useEffect(() => {
     console.log("useEffect, lets load everything");
@@ -85,33 +91,45 @@ export default function App() {
       LocalStorage.removeSetting("played_door");
     };
     escapp = new ESCAPP(GLOBAL_CONFIG.escapp);
-    escapp.validate((success, er_state) => {
-      console.log("ESCAPP validation", success, er_state);
-      try {
-        if (success) {
-          //ha ido bien, restauramos el estado recibido
-          restoreState(er_state);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    });
+    // escapp.validate((success, er_state) => {
+    //   console.log("ESCAPP validation", success, er_state);
+    //   try {
+    //     if (success) {
+    //       //ha ido bien, restauramos el estado recibido
+    //       restoreState(er_state);
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // });
+    loadConfig(initialConfig);
 
     setLoading(false);
   }, []);
 
-  const solvePuzzle = (solution) => {
-    //XXX DUDA: a este método solo se le llama cuando sale el boton continue, que es cuando se han resuelto todos los puzzles
+  function loadConfig(config) {
+    let configuration = {
+      theme: {
+        name: config.config.theme,
+        ...(THEME_ASSETS[config.config.theme] || {}),
+      },
+      ...config,
+    };
+    console.log(configuration);
+    setConfig(configuration);
+  }
 
-    //XXX DUDA: en el de MalditaER se guarda en localstorage con la clave "safebox_password", quizá sirva por si se vuelve a recargar o se vuelve a la app, que el estado se pierde.
-    //lo mejor seria guardar en localstorage todo el estado de la app cuando algo cambia y asi al volver a cargar la app se restaura el estado en el useEffect
-    console.log(solution);
-    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solution), {}, (success) => {
+  const solvePuzzle = (solution) => {
+    const solutionStr = solution.map((s) => s + 1).join(",");
+    console.log(solutionStr);
+    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solutionStr), {}, (success) => {
       if (!success) {
         // alert("ta mal");
       } else {
         // alert("ta bien");
       }
+      setSolved(success);
+      setSolvedTrigger((prev) => prev + 1);
     });
   };
 
@@ -166,30 +184,22 @@ export default function App() {
     saveState();
   }
 
-  /*
-  //COMENTADO PORQUE NO SE USA EN EL EJEMPLO, serviría para saber si se han superado todos los puzzles 
-  // y entonces se muestra un mensaje u otro en la pantalla final
-  //
-  let puzzlesSolved = [];
-  let solvedAllPuzzles = false;
-  if(!escapp){
-    //si no esta definido escapp, es que estamos loading
-    setLoading(true);
-  } else {
-    let newestState = escapp.getNewestState();
-    puzzlesSolved = (newestState && newestState.puzzlesSolved) ? newestState.puzzlesSolved : [];
-    //en este ejemplo se han superado todos los puzzles si se han superado 3 que es el total de la ER
-    solvedAllPuzzles = newestState.puzzlesSolved.length >= 3;
-  }
-  */
-
   return (
     <div id="firstnode">
-      <audio id="audio_failure" src="sounds/wrong.wav" autostart="false" preload="auto" />
-      <div className={`main-background ${fail ? "fail" : ""}`}>
-        <MainScreen show={screen === KEYPAD_SCREEN} initialConfig={initialConfig} solvePuzzle={solvePuzzle} />
-        <ControlPanel show={screen === CONTROL_PANEL_SCREEN} onOpenScreen={onOpenScreen} />
-      </div>
+      {config.theme && (
+        <div className={`main-background ${fail ? "fail" : ""}`}>
+          <img className="bg-image" src={config.theme.backgroundImg}></img>
+  
+          <MainScreen
+            show={screen === KEYPAD_SCREEN}
+            config={config}
+            solvePuzzle={solvePuzzle}
+            solved={solved}
+            solvedTrigger={solvedTrigger}
+          />
+          <ControlPanel theme={config.theme} show={screen === CONTROL_PANEL_SCREEN} onOpenScreen={onOpenScreen} />
+        </div>
+      )}
     </div>
   );
 }

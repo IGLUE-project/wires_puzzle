@@ -2,9 +2,10 @@ div#MainScreen {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-size: contain;
   div.frame {
-    width: 663px;
-    height: 663px;
+    width: 500px;
+    height: 500px;
     display: flex;
     position: relative;
     justify-content: center;
@@ -17,7 +18,9 @@ div#MainScreen {
       object-position: 0 -30%;
     }
     div.wires {
-      width: 72%;
+      width: 65%;
+      margin-bottom: 1rem;
+      margin-right: 2.3rem;
       position: relative;
       z-index: 2;
     }
