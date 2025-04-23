@@ -14,15 +14,7 @@ const FixWiringGame = ({ config, setConnections }) => {
   const backgroundImg = new Image();
   backgroundImg.src = config.theme.panelBackgroundImg;
 
-  const boltImg = new Image();
-  boltImg.src = config.theme.connectionImg;
-  const backgroundImg = new Image();
-  backgroundImg.src = config.theme.panelBackgroundImg;
-
   useEffect(() => {
-    const pickWireAudio = document.getElementById("audio_pick-wire");
-    const plugWireAudio = document.getElementById("audio_plug-wire");
-
     const pickWireAudio = document.getElementById("audio_pick-wire");
     const plugWireAudio = document.getElementById("audio_plug-wire");
 
@@ -34,16 +26,12 @@ const FixWiringGame = ({ config, setConnections }) => {
     //Cables reordenados en funcion del target (para lso cuadros de arriba)
     const wires = config.wires;
     const targets = config.target;
-    const wires = config.wires;
-    const targets = config.target;
     let selectedWireIndex = -1;
     let gameCompleted = false;
     //Wire Area width/height
     const WAWidth = canvasWidth / wires.length;
     const WAHeight = 150;
 
-    let connections = [];
-    wires.forEach(() => connections.push(null));
     let connections = [];
     wires.forEach(() => connections.push(null));
 
@@ -212,19 +200,14 @@ const FixWiringGame = ({ config, setConnections }) => {
     canvas.addEventListener("mousedown", () => {
       const index = Math.floor(mouseX / WAWidth);
       const tIndex = connections.indexOf(index);
-      const tIndex = connections.indexOf(index);
       if (mouseY > canvasHeight - WAHeight - 35) {
-        if (connections[index] !== null) {
-          connections[index] = null;
         if (connections[index] !== null) {
           connections[index] = null;
         }
         selectedWireIndex = index;
         pickWireAudio.play();
-        pickWireAudio.play();
       } else if (mouseY < WAHeight + 35 && tIndex !== null && tIndex !== -1) {
         selectedWireIndex = tIndex;
-        connections[tIndex] = null;
         connections[tIndex] = null;
       }
     });
@@ -234,17 +217,13 @@ const FixWiringGame = ({ config, setConnections }) => {
       if (mouseY < WAHeight + 35) {
         const index = Math.floor(mouseX / WAWidth);
         const tIndex = connections.indexOf(index);
-        const tIndex = connections.indexOf(index);
 
         if (tIndex !== null && tIndex !== -1) {
-          connections[tIndex] = null;
           connections[tIndex] = null;
         }
         if (selectedWireIndex !== -1) {
           connections[selectedWireIndex] = index;
-          connections[selectedWireIndex] = index;
           gameCompleted = checkGameFinish();
-          plugWireAudio.play();
           plugWireAudio.play();
         }
       }
@@ -254,12 +233,9 @@ const FixWiringGame = ({ config, setConnections }) => {
     function checkGameFinish() {
       for (let i = 0; i < connections.length; i++) {
         if (connections[i] === null) {
-      for (let i = 0; i < connections.length; i++) {
-        if (connections[i] === null) {
           return false;
         }
       }
-      setConnections(connections);
       setConnections(connections);
       return true;
     }
@@ -288,13 +264,6 @@ const FixWiringGame = ({ config, setConnections }) => {
         autostart="false"
         preload="auto"
       />
-    </>
-  );
-  return (
-    <>
-      <canvas ref={canvasRef} id="gameCanvas" />
-      <audio id="audio_pick-wire" src={config.theme.wireAudio} autostart="false" preload="auto" />
-      <audio id="audio_plug-wire" src={config.theme.dropWireAudio} autostart="false" preload="auto" />
     </>
   );
 };
