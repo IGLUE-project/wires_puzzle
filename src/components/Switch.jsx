@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/scss/Switch.scss";
 
-const Switch = ({ onClick, solved, solvedTrigger }) => {
+const Switch = ({ onClick, solved, solvedTrigger, theme }) => {
   const [activo, setActivo] = useState(false);
   const [error, setError] = useState(false);
 
@@ -40,10 +40,10 @@ const Switch = ({ onClick, solved, solvedTrigger }) => {
         <div className="handle"></div>
       </div>
 
-      <audio id="audio_connection" src="sounds/connection.wav" autostart="false" preload="auto" />
-      <audio id="audio_fail-connection" src="sounds/fail-connection.wav" autostart="false" preload="auto" />
-      <audio id="audio_switch1" src="sounds/switch1.wav" autostart="false" preload="auto" />
-      <audio id="audio_switch2" src="sounds/switch2.wav" autostart="false" preload="auto" />
+      <audio id="audio_connection" src={theme.connectionAudio} autostart="false" preload="auto" />
+      <audio id="audio_fail-connection" src={theme.failAudio} autostart="false" preload="auto" />
+      <audio id="audio_switch1" src={theme.switchAudio} autostart="false" preload="auto" />
+      <audio id="audio_switch2" src={theme.switchDownAudio} autostart="false" preload="auto" />
     </div>
   );
 };

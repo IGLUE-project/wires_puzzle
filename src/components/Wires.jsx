@@ -1,18 +1,18 @@
 import { useEffect, useRef } from "react";
 import "../assets/scss/Wires.scss";
 
-const boltImg = new Image();
-boltImg.src = "/src/assets/images/bolt.png";
-const backgroundImg = new Image();
-backgroundImg.src = "/src/assets/images/background.jpg";
-
 const canvasWidth = 1010;
 const canvasHeight = 1000;
 let mouseX = 0;
 let mouseY = 0;
 
-const FixWiringGame = ({ initialConfig, setConnections }) => {
+const FixWiringGame = ({ config, setConnections }) => {
   const canvasRef = useRef(null);
+
+  const boltImg = new Image();
+  boltImg.src = config.theme.connectionImg;
+  const backgroundImg = new Image();
+  backgroundImg.src = config.theme.panelBackgroundImg;
 
   useEffect(() => {
     const pickWireAudio = document.getElementById("audio_pick-wire");
@@ -24,8 +24,8 @@ const FixWiringGame = ({ initialConfig, setConnections }) => {
     canvas.height = canvasHeight;
 
     //Cables reordenados en funcion del target (para lso cuadros de arriba)
-    const wires = initialConfig.wires;
-    const targets = initialConfig.target;
+    const wires = config.wires;
+    const targets = config.target;
     let selectedWireIndex = -1;
     let gameCompleted = false;
     //Wire Area width/height
@@ -215,8 +215,8 @@ const FixWiringGame = ({ initialConfig, setConnections }) => {
   return (
     <>
       <canvas ref={canvasRef} id="gameCanvas" />
-      <audio id="audio_pick-wire" src="sounds/pick-wire.wav" autostart="false" preload="auto" />
-      <audio id="audio_plug-wire" src="sounds/plug-wire.mp3" autostart="false" preload="auto" />
+      <audio id="audio_pick-wire" src={config.theme.wireAudio} autostart="false" preload="auto" />
+      <audio id="audio_plug-wire" src={config.theme.dropWireAudio} autostart="false" preload="auto" />
     </>
   );
 };

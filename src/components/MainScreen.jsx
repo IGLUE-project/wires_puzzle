@@ -3,14 +3,14 @@ import "./../assets/scss/MainScreen.scss";
 import Switch from "./Switch";
 import FixWiringGame from "./Wires";
 
-export default function MainScreen({ show, initialConfig, solvePuzzle, solved, solvedTrigger }) {
+export default function MainScreen({ show, config, solvePuzzle, solved, solvedTrigger }) {
   const [connections, setConnections] = useState([]);
 
   useEffect(() => {
-    if (initialConfig.wires && initialConfig.wires.length > 0) {
-      setConnections(initialConfig.wires.map(() => null));
+    if (config.wires && config.wires.length > 0) {
+      setConnections(config.wires.map(() => null));
     }
-  }, [initialConfig.wires]);
+  }, [config.wires]);
   const click = () => {
     solvePuzzle(connections);
   };
@@ -20,12 +20,12 @@ export default function MainScreen({ show, initialConfig, solvePuzzle, solved, s
       <div className="frame">
         <div className="wires">
           {connections.length > 0 && (
-            <FixWiringGame initialConfig={initialConfig} connections={connections} setConnections={setConnections} />
+            <FixWiringGame config={config} connections={connections} setConnections={setConnections} />
           )}
         </div>
-        <img className="panelopen" src="/src/assets/images/panel_electrico_abierto.png" alt="panel electrico abierto" />
+        <img className="panelopen" src={config.theme.panelOpenImg} alt="panel electrico abierto" />
       </div>
-      <Switch solved={solved} onClick={click} solvedTrigger={solvedTrigger} />
+      <Switch solved={solved} onClick={click} solvedTrigger={solvedTrigger} theme={config.theme} />
     </div>
   );
 }

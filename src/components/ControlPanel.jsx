@@ -2,10 +2,10 @@ import React from "react";
 import "./../assets/scss/ControlPanel.scss";
 import { KEYPAD_SCREEN } from "../constants/constants";
 
-const ControlPanel = ({ show, onOpenScreen }) => {
+const ControlPanel = ({ show, onOpenScreen, theme }) => {
   return (
     <div id="ControlPanel" className={"screen_wrapper" + (show ? "" : " screen_hidden")}>
-      <img src="/src/assets/images/panel_electrico.png" className="panel" onClick={() => onOpenScreen(KEYPAD_SCREEN)} />
+      <img src={theme.panelImg} className="panel" onClick={() => onOpenScreen(KEYPAD_SCREEN)} />
     </div>
   );
 };
