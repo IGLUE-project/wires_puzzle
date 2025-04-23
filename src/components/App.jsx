@@ -8,6 +8,7 @@ import * as I18n from "../vendors/I18n.js";
 import * as LocalStorage from "../vendors/Storage.js";
 
 import { CONTROL_PANEL_SCREEN, KEYPAD_SCREEN, THEME_ASSETS, THEMES } from "../constants/constants.jsx";
+import { CONTROL_PANEL_SCREEN, KEYPAD_SCREEN, THEME_ASSETS, THEMES } from "../constants/constants.jsx";
 import MainScreen from "./MainScreen.jsx";
 import ControlPanel from "./ControlPanel.jsx";
 
@@ -62,7 +63,7 @@ const initialConfig = {
     },
   ],
   config: {
-    theme: THEMES.FUTURISTIC,
+    theme: THEMES.BASIC,
   },
 };
 
@@ -71,6 +72,9 @@ export default function App() {
   const [screen, setScreen] = useState(CONTROL_PANEL_SCREEN);
   const [prevScreen, setPrevScreen] = useState(CONTROL_PANEL_SCREEN);
   const [fail, setFail] = useState(false);
+  const [solved, setSolved] = useState(false);
+  const [solvedTrigger, setSolvedTrigger] = useState(0);
+  const [config, setConfig] = useState({});
   const [solved, setSolved] = useState(false);
   const [solvedTrigger, setSolvedTrigger] = useState(0);
   const [config, setConfig] = useState({});
@@ -103,6 +107,18 @@ export default function App() {
     //   }
     // });
     loadConfig(initialConfig);
+    // escapp.validate((success, er_state) => {
+    //   console.log("ESCAPP validation", success, er_state);
+    //   try {
+    //     if (success) {
+    //       //ha ido bien, restauramos el estado recibido
+    //       restoreState(er_state);
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // });
+    loadConfig(initialConfig);
 
     setLoading(false);
   }, []);
@@ -119,7 +135,22 @@ export default function App() {
     setConfig(configuration);
   }
 
+  function loadConfig(config) {
+    let configuration = {
+      theme: {
+        name: config.config.theme,
+        ...(THEME_ASSETS[config.config.theme] || {}),
+      },
+      ...config,
+    };
+    console.log(configuration);
+    setConfig(configuration);
+  }
+
   const solvePuzzle = (solution) => {
+    const solutionStr = solution.map((s) => s + 1).join(",");
+    console.log(solutionStr);
+    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solutionStr), {}, (success) => {
     const solutionStr = solution.map((s) => s + 1).join(",");
     console.log(solutionStr);
     escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solutionStr), {}, (success) => {
