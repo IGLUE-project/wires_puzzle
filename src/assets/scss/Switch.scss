@@ -8,8 +8,15 @@
   z-index: 10;
   flex-direction: column;
   align-items: center;
-  background-image: url("src/assets/images/switch_container.png");
   background-size: contain;
+}
+
+#switch-ancient {
+
+}
+
+#switch-basic {
+  background-image: url("src/assets/images/switch_container.png");
 }
 
 .switchContainer {

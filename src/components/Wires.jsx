@@ -46,6 +46,8 @@ const FixWiringGame = ({ config, setConnections }) => {
   const backgroundImg = new Image();
   backgroundImg.src = config.theme.panelBackgroundImg;
 
+  console.log(config.theme.panelBackgroundImg)
+
   useEffect(() => {
     const loadIcons = async () => {
       const images = await preloadIcons(config.wires);
@@ -136,7 +138,7 @@ const FixWiringGame = ({ config, setConnections }) => {
           mouseX,
           mouseY,
         );
-        ctx.drawImage(iconImages[selectedWireIndex], mouseX - 70, mouseY - 100, 140, 100);
+        ctx.drawImage(iconImages[selectedWireIndex], mouseX - 70, mouseY - 100, 190, 100);
       }
 
       if (gameCompleted) {
@@ -221,6 +223,7 @@ const FixWiringGame = ({ config, setConnections }) => {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
+      //iconos de wires
       if (wire.image) {
         const wireImg = new Image();
         wireImg.src = wire.image;
