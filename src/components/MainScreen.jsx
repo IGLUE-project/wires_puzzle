@@ -17,6 +17,7 @@ export default function MainScreen({ show, config, solvePuzzle, solved, solvedTr
 
   return (
     <div id="MainScreen" className={"screen_wrapper" + (show ? "" : " screen_hidden")}>
+      <img className="bg-image" src={config.theme.backgroundImgCloseUp}></img>
       <div className="frame">
         <div className="wires">
           {connections.length > 0 && (

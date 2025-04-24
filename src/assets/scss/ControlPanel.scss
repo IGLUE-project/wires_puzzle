@@ -8,6 +8,7 @@ $bg-color: #1d4d84;
 #ControlPanel {
   display: flex;
   justify-content: center;
+  align-items: center
 }
 
 .background {
@@ -74,4 +75,9 @@ $bg-color: #1d4d84;
   background: linear-gradient(180deg, color.adjust($primary-color, $lightness: 10%) 0%, $primary-color 100%);
   border-radius: 10px;
   box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.4), inset -3px -3px 8px rgba(255, 255, 255, 0.2);
+}
+.click-area-wires {
+  height: 180px;
+  width: 170px;
+  cursor: pointer
 }

@@ -4,7 +4,7 @@ import { jackIcon } from "../icons/wiresIcons";
 import ReactDOMServer from "react-dom/server";
 
 const canvasWidth = 1010;
-const canvasHeight = 1000;
+const canvasHeight = 1040;
 let mouseX = 0;
 let mouseY = 0;
 
@@ -149,7 +149,7 @@ const FixWiringGame = ({ config, setConnections }) => {
       //ctx.globalAlpha = 0.5;
       //ctx.fillStyle = color ? color : "#3b3b3b";
 
-      ctx.fillStyle = "#3b3b3b";
+      ctx.fillStyle = "#403937";
       ctx.fillRect(x, y, w, h);
       // ctx.globalAlpha = 1.0;
       ctx.strokeStyle = "black";
@@ -173,13 +173,20 @@ const FixWiringGame = ({ config, setConnections }) => {
       const midY = (y1 + y2) / 2 + 50; // Agrega un poco de curvatura
 
       // Primero dibujamos el borde negro
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 25; // Un poco más grueso que el borde principal para que se vea bien
+      ctx.strokeStyle = "#503829";
+
+      ctx.lineWidth = 23; // Un poco más grueso que el borde principal para que se vea bien
       ctx.lineCap = "round";
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.quadraticCurveTo(midX, midY, x2, y2);
       ctx.stroke();
+
+      //   //sombra
+      // ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+      // ctx.shadowOffsetX = -12;
+      // ctx.shadowOffsetY = 0;
+      // ctx.shadowBlur = 8;
 
       // Luego dibujamos la línea con el gradiente
       ctx.strokeStyle = gradient;
@@ -202,8 +209,14 @@ const FixWiringGame = ({ config, setConnections }) => {
       return `rgb(${R}, ${G}, ${B})`;
     }
 
+    // quitar la sombra
+    ctx.shadowColor = "rgba(0, 0, 0, 0)";
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+
     function drawLabel(wire, i, yPosition) {
-      ctx.fillStyle = "white";
+      ctx.fillStyle = "#e8d5b0";
       ctx.font = "50px Arial";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";

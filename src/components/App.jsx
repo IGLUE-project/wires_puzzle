@@ -15,25 +15,25 @@ let escapp;
 const initialConfig = {
   wires: [
     {
-      color: "#3abf19",
+      color: "#91933D",
       areaColor: "",
       label: "👽",
       image: "",
     },
     {
-      color: "#c70000",
+      color: "#645B90",
       areaColor: "",
       label: "cable 1",
       image: "/src/assets/images/estrella.svg",
     },
     {
-      color: "#0021c7",
+      color: "#9C5425",
       areaColor: "#0021c7",
       label: "cable 2",
       image: "",
     },
     {
-      color: "#c700b5",
+      color: "#CD717C",
       areaColor: "",
       label: "cable 3",
       image: "",
@@ -47,7 +47,7 @@ const initialConfig = {
     },
     {
       areaColor: "#c70000",
-      label: "tarjet 1",
+      label: "target 1",
       image: "",
     },
     {
@@ -57,7 +57,7 @@ const initialConfig = {
     },
     {
       areaColor: "#c700b5",
-      label: "tarjet 3",
+      label: "target 3",
       image: "",
     },
   ],
@@ -188,6 +188,8 @@ export default function App() {
     <div id="firstnode">
       {config.theme && (
         <div className={`main-background ${fail ? "fail" : ""}`}>
+          <img className="bg-image" src={config.theme.backgroundImg}></img>
+  
           <MainScreen
             show={screen === KEYPAD_SCREEN}
             config={config}

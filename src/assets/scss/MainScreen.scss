@@ -2,12 +2,14 @@ div#MainScreen {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  background-size: contain;
   div.frame {
-    width: 613px;
-    height: 911px;
+    width: 500px;
+    height: 500px;
     display: flex;
     position: relative;
+    justify-content: center;
+    align-items: center;
     img.panelopen {
       position: absolute;
       width: 100%;
@@ -16,9 +18,9 @@ div#MainScreen {
       object-position: 0 -30%;
     }
     div.wires {
-      width: 83%;
-      top: 172px;
-      left: 46px;
+      width: 62%;
+      margin-bottom: 1rem;
+      margin-right: 2rem;
       position: relative;
       z-index: 2;
     }

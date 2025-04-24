@@ -5,7 +5,7 @@ import { KEYPAD_SCREEN } from "../constants/constants";
 const ControlPanel = ({ show, onOpenScreen, theme }) => {
   return (
     <div id="ControlPanel" className={"screen_wrapper" + (show ? "" : " screen_hidden")}>
-      <img src={theme.panelImg} className="panel" onClick={() => onOpenScreen(KEYPAD_SCREEN)} />
+      <div src={theme.panelImg} className="click-area-wires" onClick={() => onOpenScreen(KEYPAD_SCREEN)} />
     </div>
   );
 };
