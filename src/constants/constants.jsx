@@ -67,7 +67,7 @@ export const THEME_ASSETS = {
     backgroundImgCloseUp: "",
     panelImg: "/src/assets/images/panel_electrico.png",
     panelOpenImg: "/src/assets/images/panel_electrico_abierto.png",
-    panelBackgroundImg: "/src/assets/images/panel_background_futuristic.jpg",
+    panelBackgroundImg: "/src/assets/images/panel_background_futuristic.png",
     wireImg: "",
     connectionImg: "/src/assets/images/female-jack.png",
     wireAudio: "sounds/pick-wire.wav",

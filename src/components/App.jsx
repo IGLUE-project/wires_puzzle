@@ -62,7 +62,7 @@ const initialConfig = {
     },
   ],
   config: {
-    theme: THEMES.BASIC,
+    theme: THEMES.FUTURISTIC,
   },
 };
 
@@ -120,7 +120,7 @@ export default function App() {
   }
 
   const solvePuzzle = (solution) => {
-    const solutionStr = solution.map((s) => s + 1).join(",");
+    const solutionStr = solution.map((s) => (s == null ? "-1" : s + 1)).join(",");
     console.log(solutionStr);
     escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solutionStr), {}, (success) => {
       if (!success) {
@@ -189,7 +189,7 @@ export default function App() {
       {config.theme && (
         <div className={`main-background ${fail ? "fail" : ""}`}>
           <img className="bg-image" src={config.theme.backgroundImg}></img>
-  
+
           <MainScreen
             show={screen === KEYPAD_SCREEN}
             config={config}
