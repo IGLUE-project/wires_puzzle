@@ -46,6 +46,8 @@ const FixWiringGame = ({ config, setConnections }) => {
   const backgroundImg = new Image();
   backgroundImg.src = config.theme.panelBackgroundImg;
 
+  console.log(config.theme.panelBackgroundImg)
+
   useEffect(() => {
     const loadIcons = async () => {
       const images = await preloadIcons(config.wires);
@@ -148,11 +150,22 @@ const FixWiringGame = ({ config, setConnections }) => {
     function drawRect(color, x, y, w, h) {
       //ctx.globalAlpha = 0.5;
       //ctx.fillStyle = color ? color : "#3b3b3b";
+      
+      // fill según el tema
+      if (config.theme.name === "basic") {
+        ctx.fillStyle = "#2d1f1c";
+        ctx.strokeStyle = "black";
+      } else if (config.theme.name === "futuristic") {
+        ctx.fillStyle = "#12102d";
+        ctx.strokeStyle = "#8863a3";
+      } else if (config.theme.name === "ancient") { 
+        ctx.fillStyle = "#7f482f"; 
+        ctx.strokeStyle = "black";
+      }
 
-      ctx.fillStyle = "#403937";
+      // ctx.fillStyle = "#403937";
       ctx.fillRect(x, y, w, h);
       // ctx.globalAlpha = 1.0;
-      ctx.strokeStyle = "black";
       ctx.lineWidth = 2;
       ctx.strokeRect(x, y, w, h);
     }
@@ -221,6 +234,7 @@ const FixWiringGame = ({ config, setConnections }) => {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
+      //iconos de wires
       if (wire.image) {
         const wireImg = new Image();
         wireImg.src = wire.image;
@@ -293,7 +307,7 @@ const FixWiringGame = ({ config, setConnections }) => {
 
   return (
     <>
-      <canvas ref={canvasRef} id="gameCanvas" />
+      <canvas ref={canvasRef} id="gameCanvas" className={`canvas-${config.theme.name}`}/>
       <audio id="audio_pick-wire" src={config.theme.wireAudio} autostart="false" preload="auto" />
       <audio id="audio_plug-wire" src={config.theme.dropWireAudio} autostart="false" preload="auto" />
     </>

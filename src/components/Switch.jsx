@@ -31,7 +31,8 @@ const Switch = ({ onClick, solved, solvedTrigger, theme }) => {
   };
 
   return (
-    <div className="Switch" onClick={togglePalanca}>
+    
+    <div className="Switch" id={`switch-${theme.name}`} onClick={togglePalanca}>
       <div className="led-box">
         <div className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}></div>
       </div>

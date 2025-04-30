@@ -8,8 +8,37 @@
   z-index: 10;
   flex-direction: column;
   align-items: center;
-  background-image: url("src/assets/images/switch_container.png");
   background-size: contain;
+}
+
+#switch-ancient {
+  margin-left: -84px;
+  .lever {
+    background-color: #4e3221;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #000000 0 -1px 9px;
+  }
+  .handle {
+    background-color: #5f3e2f;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #412f2e 0 -1px 9px;
+  }
+}
+#switch-futuristic {
+  margin-left: -90px;
+  .lever {
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #4b176d 0 -1px 9px;
+  }
+  .handle {
+    background-color: #765785;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #4b176d 0 -1px 9px;
+  }
+  .led-off {
+    background: #38145888
+  }
+
+}
+#switch-basic {
+  background-image: url("src/assets/images/switch_container.png");
 }
 
 .switchContainer {

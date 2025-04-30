@@ -62,7 +62,7 @@ const initialConfig = {
     },
   ],
   config: {
-    theme: THEMES.FUTURISTIC,
+    theme: THEMES.BASIC,
   },
 };
 
