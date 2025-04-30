@@ -68,8 +68,8 @@ const initialConfig = {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [screen, setScreen] = useState(CONTROL_PANEL_SCREEN);
-  const [prevScreen, setPrevScreen] = useState(CONTROL_PANEL_SCREEN);
+  const [screen, setScreen] = useState(KEYPAD_SCREEN);
+  const [prevScreen, setPrevScreen] = useState(KEYPAD_SCREEN);
   const [fail, setFail] = useState(false);
   const [solved, setSolved] = useState(false);
   const [solvedTrigger, setSolvedTrigger] = useState(0);
@@ -144,8 +144,8 @@ export default function App() {
       let lastPuzzleSolved = Math.max.apply(null, er_state.puzzlesSolved);
       if (lastPuzzleSolved >= GLOBAL_CONFIG.escapp.puzzleId) {
         //puzzle superado, abrimos la caja fuerte
-        setScreen(CONTROL_PANEL_SCREEN);
-        setPrevScreen(CONTROL_PANEL_SCREEN);
+        setScreen(KEYPAD_SCREEN);
+        setPrevScreen(KEYPAD_SCREEN);
       } else {
         //puzzle no superado, miramos en localStorage en qué pantalla estábamos
         let localstateToRestore = LocalStorage.getSetting("app_state");
@@ -197,7 +197,6 @@ export default function App() {
             solved={solved}
             solvedTrigger={solvedTrigger}
           />
-          <ControlPanel theme={config.theme} show={screen === CONTROL_PANEL_SCREEN} onOpenScreen={onOpenScreen} />
         </div>
       )}
     </div>

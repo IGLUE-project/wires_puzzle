@@ -31,7 +31,7 @@ export const THEME_ASSETS = {
     connectionAudio: "sounds/connection.wav",
   },
   [THEMES.BASIC]: {
-    backgroundImg: "/src/assets/images/panel_background.png",
+    backgroundImg: "/src/assets/images/basic_wires_puzzle_bg.png",
     backgroundImgCloseUp: "/src/assets/images/panel_background_closeup.png",
     panelImg: "/src/assets/images/panel_electrico.png",
     panelOpenImg: "/src/assets/images/panel_electrico_abierto.png",
