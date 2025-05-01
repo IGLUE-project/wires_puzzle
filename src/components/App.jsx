@@ -61,6 +61,16 @@ const initialConfig = {
       label: "target 3",
       image: "",
     },
+    {
+      areaColor: "#c700b5",
+      label: "target 3",
+      image: "",
+    },
+    {
+      areaColor: "#c700b5",
+      label: "target 3",
+      image: "",
+    },
   ],
   config: {
     theme: THEMES.BASIC,

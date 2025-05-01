@@ -37,11 +37,23 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
       onClick={togglePalanca}
       style={{ height: size.height * 0.1, backgroundImage: `url(${theme.switchContainerImg})` }}
     >
-      <div className="led-box">
-        <div className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}></div>
+      <div className="led-box" style={{ marginTop: -size.height * 0.04, height: size.height * 0.04 }}>
+        <div
+          style={{ height: size.height * 0.03, width: size.height * 0.03 }}
+          className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}
+        ></div>
       </div>
       <div className="switchContainer">
-        <div className={`lever ${activo ? "active" : ""}`}></div>
+        <div
+          className={`lever ${activo ? "active" : ""}`}
+          style={{
+            width: size.width * 0.04, // escalar según pantalla
+            height: size.height * 0.01,
+            transform: activo ? "translateY(-180%)" : "translateY(180%)",
+            position: "absolute",
+            borderRadius: "5px",
+          }}
+        ></div>
         <div className="handle"></div>
       </div>
 

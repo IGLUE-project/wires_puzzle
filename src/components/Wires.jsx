@@ -86,7 +86,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
 
   useEffect(() => {
     if (!wireImages) return;
-    const canvasWidth = size.width * 0.66;
+    const canvasWidth = size.width * 0.75;
     const canvasHeight = size.height * 0.64;
     const pickWireAudio = document.getElementById("audio_pick-wire");
     const plugWireAudio = document.getElementById("audio_plug-wire");
@@ -118,16 +118,26 @@ const FixWiringGame = ({ config, setConnections, size }) => {
       wires.forEach((wire, i) => {
         drawRect(wire.color, WAWidth * i, canvasHeight - WAHeight, WAWidth, WAHeight);
         if (connections[i] !== null) {
+          //tamaño del jack cuando está conectado
+          const connectedJackHeight = WAWidth * 0.2;
           drawLine(
             wire.color,
             i * WAWidth + WAWidth / 2,
             canvasHeight - WAHeight,
             connections[i] * WAWidth + WAWidth / 2,
-            WAHeight + 65,
+            WAHeight + connectedJackHeight,
           );
         } else {
           if (selectedWireIndex !== i) {
-            ctx.drawImage(wireImages[i], i * WAWidth + WAWidth / 2 - 70, canvasHeight - WAHeight - 50, 140, 100);
+            const imgSizew = WAWidth * 0.4;
+            const imgSizeh = WAWidth * 0.3;
+            ctx.drawImage(
+              wireImages[i],
+              i * WAWidth + WAWidth / 2 - imgSizew / 2,
+              canvasHeight - WAHeight - imgSizeh / 2,
+              imgSizew,
+              imgSizeh,
+            );
           }
         }
         drawLabel(wire, i, canvasHeight - WAHeight / 2);
@@ -135,7 +145,8 @@ const FixWiringGame = ({ config, setConnections, size }) => {
       // Dibujar los cuadros de arriba
       targets.forEach((target, i) => {
         drawRect(target.colorArea, WAWidth * i, 0, WAWidth, WAHeight);
-        ctx.drawImage(boltImg, i * WAWidth + WAWidth / 2 - 30, WAHeight - 30, 60, 60);
+        const imgSize = WAWidth / 5;
+        ctx.drawImage(boltImg, i * WAWidth + WAWidth / 2 - imgSize / 2, WAHeight - imgSize / 2, imgSize, imgSize);
         drawLabel(target, i, WAHeight / 2);
         //obtener el índice del "jack" conectado
         let connected = null;
@@ -144,10 +155,11 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         });
         //Dibujar el "jack" conectado
         if (connected !== null) {
-          const x = i * WAWidth + WAWidth / 2 - 15;
-          const y = WAHeight + 5;
-          const width = 30;
-          const height = 60;
+          const width = WAWidth * 0.1;
+          const height = WAWidth * 0.2;
+          const x = i * WAWidth + WAWidth / 2 - width / 2;
+          const y = WAHeight;
+
           const radius = width / 2;
           ctx.fillStyle = wires[connected].color;
           ctx.fillRect(x, y + radius, width, height - radius);
@@ -160,14 +172,20 @@ const FixWiringGame = ({ config, setConnections, size }) => {
 
       // Dibujar la línea actual si se está arrastrando
       if (selectedWireIndex > -1) {
-        drawLine(
-          wires[selectedWireIndex].color,
-          selectedWireIndex * WAWidth + WAWidth / 2,
-          canvasHeight - WAHeight,
-          mouseX,
-          mouseY,
-        );
-        ctx.drawImage(wireImages[selectedWireIndex], mouseX - 70, mouseY - 100, 140, 100);
+        try {
+          drawLine(
+            wires[selectedWireIndex].color,
+            selectedWireIndex * WAWidth + WAWidth / 2,
+            canvasHeight - WAHeight,
+            mouseX,
+            mouseY,
+          );
+          const imgSizew = WAWidth * 0.4;
+          const imgSizeh = WAWidth * 0.3;
+          ctx.drawImage(wireImages[selectedWireIndex], mouseX - imgSizew / 2, mouseY - imgSizeh, imgSizew, imgSizeh);
+        } catch (e) {
+          console.error("Error al dibujar la línea:", e);
+        }
       }
 
       if (gameCompleted) {
@@ -217,7 +235,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
       // Primero dibujamos el borde negro
       ctx.strokeStyle = "#503829";
 
-      ctx.lineWidth = 23; // Un poco más grueso que el borde principal para que se vea bien
+      ctx.lineWidth = WAWidth * 0.06; // Un poco más grueso que el borde principal para que se vea bien
       ctx.lineCap = "round";
       ctx.beginPath();
       ctx.moveTo(x1, y1);
@@ -232,7 +250,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
 
       // Luego dibujamos la línea con el gradiente
       ctx.strokeStyle = gradient;
-      ctx.lineWidth = 20; // El grosor real de la línea
+      ctx.lineWidth = WAWidth * 0.05; // El grosor real de la línea
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.quadraticCurveTo(midX, midY, x2, y2);
@@ -259,7 +277,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
 
     function drawLabel(wire, i, yPosition) {
       ctx.fillStyle = "#e8d5b0";
-      ctx.font = `${canvasWidth / 25}px Arial`;
+      ctx.font = `${WAWidth / 8}px Arial`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
@@ -267,7 +285,8 @@ const FixWiringGame = ({ config, setConnections, size }) => {
       if (wire.image) {
         const wireImg = new Image();
         wireImg.src = wire.image;
-        ctx.drawImage(wireImg, i * WAWidth + WAWidth / 2 - 35, yPosition - 35, 70, 70);
+        const imgSize = WAWidth / 6;
+        ctx.drawImage(wireImg, i * WAWidth + WAWidth / 2 - imgSize / 2, yPosition - imgSize / 2, imgSize, imgSize);
       } else {
         ctx.fillText(wire.label, i * WAWidth + WAWidth / 2, yPosition, WAWidth);
       }
@@ -275,14 +294,13 @@ const FixWiringGame = ({ config, setConnections, size }) => {
 
     // Manejo del mouse
 
-    canvas.addEventListener("mousemove", (e) => {
+    const mouseMoveHandler = (e) => {
       const rect = canvas.getBoundingClientRect();
       mouseX = (e.clientX - rect.left) * (canvasWidth / rect.width);
       mouseY = (e.clientY - rect.top) * (canvasHeight / rect.height);
-    });
+    };
 
-    // Detectar cuando se inicia la conexión
-    canvas.addEventListener("mousedown", () => {
+    const mouseDownHandler = () => {
       const index = Math.floor(mouseX / WAWidth);
       const tIndex = connections.indexOf(index);
       if (mouseY > canvasHeight - WAHeight - 35) {
@@ -295,10 +313,9 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         selectedWireIndex = tIndex;
         connections[tIndex] = null;
       }
-    });
+    };
 
-    // Detectar cuando se suelta la conexión y validar si es correcta
-    canvas.addEventListener("mouseup", () => {
+    const mouseUpHandler = () => {
       if (mouseY < WAHeight + 100) {
         const index = Math.floor(mouseX / WAWidth);
         const tIndex = connections.indexOf(index);
@@ -313,7 +330,11 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         }
       }
       selectedWireIndex = -1;
-    });
+    };
+
+    canvas.addEventListener("mousemove", mouseMoveHandler);
+    canvas.addEventListener("mousedown", mouseDownHandler);
+    canvas.addEventListener("mouseup", mouseUpHandler);
 
     function checkGameFinish() {
       for (let i = 0; i < connections.length; i++) {
@@ -332,6 +353,11 @@ const FixWiringGame = ({ config, setConnections, size }) => {
     }
 
     loop();
+    return () => {
+      canvas.removeEventListener("mousemove", mouseMoveHandler);
+      canvas.removeEventListener("mousedown", mouseDownHandler);
+      canvas.removeEventListener("mouseup", mouseUpHandler);
+    };
   }, [wireImages, size]);
 
   return (

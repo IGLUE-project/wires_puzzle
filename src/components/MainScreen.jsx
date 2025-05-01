@@ -22,12 +22,22 @@ export default function MainScreen({ show, config, solvePuzzle, solved, solvedTr
 
   useEffect(() => {
     const handleResize = () => {
-      setSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+
+      const aspectRatio = 16 / 9;
+      let width = windowWidth * 0.9;
+      let height = width / aspectRatio;
+
+      if (height > windowHeight * 0.9) {
+        height = windowHeight * 0.9;
+        width = height * aspectRatio;
+      }
+
+      setSize({ width, height });
     };
 
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
