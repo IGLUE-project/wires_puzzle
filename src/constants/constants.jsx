@@ -1,3 +1,5 @@
+import { iconMap } from "../icons/wiresIcons";
+
 export const PAINTING_SCREEN = "painting";
 export const SAFE_CLOSED_SCREEN = "safe_closed";
 export const SAFE_OPEN_SCREEN = "safe_open";
@@ -15,13 +17,9 @@ export const ICONS = ["circle", "triangle", "square", "pentagon", "star", "hexag
 
 export const THEME_ASSETS = {
   [THEMES.ANCIENT]: {
-    backgroundImg: "/src/assets/images/background_ancient.png",
-    backgroundImgCloseUp: "/src/assets/images/background_closeup_ancient.png",
-    panelImg: "/src/assets/images/box_ancient.png",
-    panelOpenImg: "/src/assets/images/box_ancient.png",
+    backgroundImgCloseUp: "/src/assets/images/ancient_wires_puzzle_bg.png",
     panelBackgroundImg: "/src/assets/images/box_background_ancient.png",
-    wireImg: "/src/assets/images/wire_ancient.png",
-    connectionImg: "/src/assets/images/female-jack.png",
+    connectionImg: "/src/assets/images/rope_svg_end_ancient.svg",
     switchContainerImg: "",
     wireAudio: "sounds/pick-wire.wav",
     dropWireAudio: "sounds/plug-wire.mp3",
@@ -29,14 +27,11 @@ export const THEME_ASSETS = {
     switchDownAudio: "sounds/switch2.wav",
     failAudio: "sounds/fail-connection.wav",
     connectionAudio: "sounds/connection.wav",
+    wire: iconMap.rope,
   },
   [THEMES.BASIC]: {
-    backgroundImg: "/src/assets/images/background_basic.png",
-    backgroundImgCloseUp: "/src/assets/images/background_closeup_basic.png",
-    panelImg: "/src/assets/images/box_basic.png",
-    panelOpenImg: "/src/assets/images/box_basic.png",
+    backgroundImgCloseUp: "/src/assets/images/basic_wires_puzzle_bg.png",
     panelBackgroundImg: "/src/assets/images/box_background_basic.jpg",
-    wireImg: "",
     connectionImg: "/src/assets/images/female-jack.png",
     switchContainerImg: "/src/assets/images/switch_container.png",
     wireAudio: "sounds/pick-wire.wav",
@@ -45,14 +40,11 @@ export const THEME_ASSETS = {
     switchDownAudio: "sounds/switch2.wav",
     failAudio: "sounds/fail-connection.wav",
     connectionAudio: "sounds/connection.wav",
+    wire: iconMap.jack,
   },
   [THEMES.CONTEMPORARY]: {
-    backgroundImg: "",
-    backgroundImgCloseUp: "",
-    panelImg: "/src/assets/images/panel_electrico.png",
-    panelOpenImg: "/src/assets/images/panel_electrico_abierto.png",
-    panelBackgroundImg: "/src/assets/images/panel_background.png",
-    wireImg: "",
+    backgroundImgCloseUp: "/src/assets/images/basic_wires_puzzle_bg.png",
+    panelBackgroundImg: "/src/assets/images/box_background_basic.jpg",
     connectionImg: "/src/assets/images/female-jack.png",
     switchContainerImg: "/src/assets/images/switch_container.png",
     wireAudio: "sounds/pick-wire.wav",
@@ -61,14 +53,11 @@ export const THEME_ASSETS = {
     switchDownAudio: "sounds/switch2.wav",
     failAudio: "sounds/fail-connection.wav",
     connectionAudio: "sounds/connection.wav",
+    wire: iconMap.jack,
   },
   [THEMES.FUTURISTIC]: {
-    backgroundImg: "/src/assets/images/background_futuristic.png",
-    backgroundImgCloseUp: "/src/assets/images/background_closeup_futuristic.png",
-    panelImg: "/src/assets/images/box_futuristic.png",
-    panelOpenImg: "/src/assets/images/box_futuristic.png",
+    backgroundImgCloseUp: "/src/assets/images/futuristic_wires_puzzle_bg.png",
     panelBackgroundImg: "/src/assets/images/box_background_futuristic.png",
-    wireImg: "",
     connectionImg: "/src/assets/images/female-jack.png",
     wireAudio: "sounds/pick-wire.wav",
     switchContainerImg: "/src/assets/images/switch_container.png",
@@ -77,5 +66,6 @@ export const THEME_ASSETS = {
     switchDownAudio: "sounds/switch2.wav",
     failAudio: "sounds/fail-connection.wav",
     connectionAudio: "sounds/connection.wav",
+    wire: iconMap.jack,
   },
 };

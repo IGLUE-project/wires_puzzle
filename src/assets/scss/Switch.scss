@@ -1,10 +1,8 @@
 .Switch {
   display: flex;
-  height: 55px;
-  width: 55px;
+  aspect-ratio: 1;
   // background-color: rgb(185, 185, 185);
-  margin-left: -77px;
-  margin-top: -75px;
+
   z-index: 10;
   flex-direction: column;
   align-items: center;
@@ -12,7 +10,6 @@
 }
 
 #switch-ancient {
-  margin-left: -84px;
   .lever {
     background-color: #4e3221;
     box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #000000 0 -1px 9px;
@@ -23,7 +20,6 @@
   }
 }
 #switch-futuristic {
-  margin-left: -90px;
   .lever {
     background-color: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #4b176d 0 -1px 9px;
@@ -33,20 +29,16 @@
     box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #4b176d 0 -1px 9px;
   }
   .led-off {
-    background: #38145888
+    background: #38145888;
   }
-
-}
-#switch-basic {
-  background-image: url("src/assets/images/switch_container.png");
 }
 
 .switchContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
-  
+  height: 100%;
+  width: 100%;
 }
 
 .lever {
@@ -59,15 +51,15 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s;
-  transform: translateY(10px);
+  transform: translateY(180%);
   position: absolute;
   box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #413e3e 0 -1px 9px;
 }
 
 .handle {
   cursor: pointer;
-  width: 38px;
-  height: 20px;
+  height: 45%;
+  width: 50%;
   background-color: rgb(92, 86, 77);
   font-size: 14px;
   font-weight: bold;
@@ -80,7 +72,7 @@
 }
 
 .active.lever {
-  transform: translateY(-10px);
+  transform: translateY(-180%);
 }
 
 .led-box {

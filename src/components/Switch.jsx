@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/scss/Switch.scss";
 
-const Switch = ({ onClick, solved, solvedTrigger, theme }) => {
+const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
   const [activo, setActivo] = useState(false);
   const [error, setError] = useState(false);
 
@@ -31,8 +31,12 @@ const Switch = ({ onClick, solved, solvedTrigger, theme }) => {
   };
 
   return (
-    
-    <div className="Switch" id={`switch-${theme.name}`} onClick={togglePalanca}>
+    <div
+      className="Switch"
+      id={`switch-${theme.name}`}
+      onClick={togglePalanca}
+      style={{ height: size.height * 0.1, backgroundImage: `url(${theme.switchContainerImg})` }}
+    >
       <div className="led-box">
         <div className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}></div>
       </div>

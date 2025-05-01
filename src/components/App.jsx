@@ -44,6 +44,7 @@ const initialConfig = {
       areaColor: "#3abf19",
       label: "5",
       image: "",
+      icon: "circle",
     },
     {
       areaColor: "#c70000",
@@ -188,8 +189,6 @@ export default function App() {
     <div id="firstnode">
       {config.theme && (
         <div className={`main-background ${fail ? "fail" : ""}`}>
-          <img className="bg-image" src={config.theme.backgroundImg}></img>
-
           <MainScreen
             show={screen === KEYPAD_SCREEN}
             config={config}
