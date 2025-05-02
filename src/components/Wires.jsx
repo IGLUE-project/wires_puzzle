@@ -254,6 +254,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         ctx.strokeStyle = style;
         ctx.globalAlpha = alpha;
         ctx.lineWidth = width;
+        ctx.lineCap = "round";
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.quadraticCurveTo(midX, midY, x2, y2);
