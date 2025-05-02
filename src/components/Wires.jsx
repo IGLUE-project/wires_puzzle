@@ -5,68 +5,50 @@ import ReactDOMServer from "react-dom/server";
 let mouseX = 0;
 let mouseY = 0;
 
-const preloadWires = async (wires, theme) => {
-  const imagePromises = [];
+// Preload images and SVGs
+const preloadImages = async (wires, tarjets, theme) => {
   const images = {};
 
-  wires.forEach((wire, i) => {
-    const color = wire.color;
-    const svgString = ReactDOMServer.renderToString(theme.wire({ width: 60, height: 60, color }));
-    const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(svgBlob);
-    const img = new Image();
-    img.src = url;
-
-    // Creamos una promesa que se resuelve cuando la imagen se carga
-    const loadImagePromise = new Promise((resolve) => {
+  const loadImage = (src, name) =>
+    new Promise((resolve) => {
+      const img = new Image();
+      img.src = src;
       img.onload = () => {
-        images[i] = img;
-        URL.revokeObjectURL(url);
+        images[name] = img;
         resolve();
       };
     });
 
-    imagePromises.push(loadImagePromise); // Añadimos la promesa al array
-  });
-
-  // Devolvemos una promesa que se resuelve cuando todas las imágenes se hayan cargado
-  await Promise.all(imagePromises);
-  return images; // Retorna el objeto `images` cuando todo se haya cargado
-};
-
-const preloadIcons = async (wires, theme) => {
-  const imagePromises = [];
-  const images = {};
-
-  wires.forEach((wire, i) => {
-    const color = wire.color;
-    const svgString = ReactDOMServer.renderToString(theme.wire({ width: 60, height: 60, color }));
-    const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-    const url = URL.createObjectURL(svgBlob);
-    const img = new Image();
-    img.src = url;
-
-    // Creamos una promesa que se resuelve cuando la imagen se carga
-    const loadImagePromise = new Promise((resolve) => {
-      img.onload = () => {
-        images[i] = img;
+  const loadSvg = (svgImg, color, name) => {
+    const svgString = ReactDOMServer.renderToString(svgImg({ width: 1, height: 1, color }));
+    const url = URL.createObjectURL(new Blob([svgString], { type: "image/svg+xml;charset=utf-8" }));
+    const svgImage = new Image();
+    svgImage.src = url;
+    return new Promise((resolve) => {
+      svgImage.onload = () => {
+        images[name] = svgImage;
         URL.revokeObjectURL(url);
         resolve();
       };
     });
+  };
 
-    imagePromises.push(loadImagePromise); // Añadimos la promesa al array
-  });
+  await Promise.all([
+    ...wires.map((wire, i) => {
+      const wireImagePromise = loadSvg(theme.wire, wire.color, i).then(() => {
+        return wire.image ? loadImage(wire.image, i + "img") : Promise.resolve();
+      });
+      return wireImagePromise;
+    }),
+    ...tarjets.map((target, i) => (target.image ? loadImage(target.image, i + "img") : Promise.resolve())),
+  ]);
 
-  // Devolvemos una promesa que se resuelve cuando todas las imágenes se hayan cargado
-  await Promise.all(imagePromises);
-  return images; // Retorna el objeto `images` cuando todo se haya cargado
+  return images;
 };
 
 const FixWiringGame = ({ config, setConnections, size }) => {
   const canvasRef = useRef(null);
-  const [wireImages, setWireImages] = useState(null);
-  const [iconImages, setIconImages] = useState(null);
+  const [preloadedImages, setPreloadedImages] = useState(null);
 
   const connectorImg = new Image();
   connectorImg.src = config.theme.connectionImg;
@@ -77,15 +59,15 @@ const FixWiringGame = ({ config, setConnections, size }) => {
 
   useEffect(() => {
     const loadIcons = async () => {
-      const images = await preloadWires(config.wires, config.theme);
-      setWireImages(images);
+      const images = await preloadImages(config.wires, config.target, config.theme);
+      setPreloadedImages(images);
     };
 
     loadIcons();
   }, [config.wires]);
 
   useEffect(() => {
-    if (!wireImages) return;
+    if (!preloadedImages) return;
     //El tamaño del canvas depende del tamaño de la pantalla
     const canvasWidth = size.width * 0.75;
     const canvasHeight = size.height * 0.64;
@@ -145,7 +127,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         } else {
           if (selectedWireIndex !== i) {
             ctx.drawImage(
-              wireImages[i],
+              preloadedImages[i],
               i * WAWidth + WAWidth / 2 - jackSizeW / 2,
               canvasHeight - WAHeight - jackSizeH / 2,
               jackSizeW,
@@ -204,7 +186,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
           );
           //Dibuja la imagen del jack en la punta del cable arrastrandose
           ctx.drawImage(
-            wireImages[selectedWireIndex],
+            preloadedImages[selectedWireIndex],
             mouseX - jackSizeW / 2,
             mouseY - jackSizeH,
             jackSizeW,
@@ -280,10 +262,14 @@ const FixWiringGame = ({ config, setConnections, size }) => {
       const xPosition = i * WAWidth + WAWidth / 2; // Posición X del area
       // si tiene una imagen la dibuja
       if (wire.image) {
-        const wireImg = new Image();
-        wireImg.src = wire.image;
         const imgOffset = labelImgSize / 2; // Offset para centrar la imagen
-        ctx.drawImage(wireImg, xPosition - imgOffset, yPosition - imgOffset, labelImgSize, labelImgSize);
+        ctx.drawImage(
+          preloadedImages[i + "img"],
+          xPosition - imgOffset,
+          yPosition - imgOffset,
+          labelImgSize,
+          labelImgSize,
+        );
       } else {
         //En caso de no tener imagen dibuja el texto
         ctx.fillStyle = "#e8d5b0";
@@ -361,7 +347,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
       canvas.removeEventListener("mousedown", mouseDownHandler);
       canvas.removeEventListener("mouseup", mouseUpHandler);
     };
-  }, [wireImages, size]);
+  }, [preloadedImages, size]);
 
   return (
     <>
