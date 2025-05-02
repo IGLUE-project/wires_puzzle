@@ -37,6 +37,8 @@ const initialConfig = {
       areaColor: "",
       label: "cable 3",
       image: "",
+      ico: "square",
+      colorIco: "purple",
     },
   ],
   target: [
@@ -44,7 +46,7 @@ const initialConfig = {
       areaColor: "#3abf19",
       label: "5",
       image: "",
-      icon: "circle",
+      ico: "triangle",
     },
     {
       areaColor: "#c70000",
@@ -60,6 +62,8 @@ const initialConfig = {
       areaColor: "#c700b5",
       label: "target 3",
       image: "",
+      ico: "square",
+      colorIco: "red",
     },
     {
       areaColor: "#c700b5",

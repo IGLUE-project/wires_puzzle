@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "../assets/scss/Wires.scss";
 import ReactDOMServer from "react-dom/server";
+import { iconMap } from "../icons/shapesIcons";
 
 let mouseX = 0;
 let mouseY = 0;
@@ -36,11 +37,17 @@ const preloadImages = async (wires, tarjets, theme) => {
   await Promise.all([
     ...wires.map((wire, i) => {
       const wireImagePromise = loadSvg(theme.wire, wire.color, i).then(() => {
-        return wire.image ? loadImage(wire.image, i + "img") : Promise.resolve();
+        if (wire.image) return loadImage(wire.image, i + "img");
+        else if (wire.ico) return loadSvg(iconMap[wire.ico], wire.colorIco, i + "ico");
+        Promise.resolve();
       });
       return wireImagePromise;
     }),
-    ...tarjets.map((target, i) => (target.image ? loadImage(target.image, i + "img") : Promise.resolve())),
+    ...tarjets.map((target, i) => {
+      if (target.image) return loadImage(target.image, i + "img target");
+      else if (target.ico) return loadSvg(iconMap[target.ico], target.colorIco, i + "ico target");
+      Promise.resolve();
+    }),
   ]);
 
   return images;
@@ -136,7 +143,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
           }
         }
         //Dibuja el texto o la imagen de la etiqueta
-        drawLabel(wire, i, canvasHeight - WAHeight / 2);
+        drawLabel(wire, i, canvasHeight - WAHeight / 2, "");
       });
       // Dibujar los cuadros de arriba
       targets.forEach((target, i) => {
@@ -149,7 +156,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         ctx.drawImage(connectorImg, xPosition - imgOffset, WAHeight - imgOffset, connectorImgSize, connectorImgSize);
 
         //Dibuja el texto o la imagen de la etiqueta
-        drawLabel(target, i, WAHeight / 2);
+        drawLabel(target, i, WAHeight / 2, " target");
 
         //obtener el índice del "jack" conectado
         let connected = null;
@@ -258,18 +265,13 @@ const FixWiringGame = ({ config, setConnections, size }) => {
     }
 
     // pinta la etiqueta(texto o imagen)
-    function drawLabel(wire, i, yPosition) {
+    function drawLabel(wire, i, yPosition, imgFlag) {
       const xPosition = i * WAWidth + WAWidth / 2; // Posición X del area
       // si tiene una imagen la dibuja
-      if (wire.image) {
+      if (wire.image || wire.ico) {
         const imgOffset = labelImgSize / 2; // Offset para centrar la imagen
-        ctx.drawImage(
-          preloadedImages[i + "img"],
-          xPosition - imgOffset,
-          yPosition - imgOffset,
-          labelImgSize,
-          labelImgSize,
-        );
+        const img = wire.image ? preloadedImages[i + "img" + imgFlag] : preloadedImages[i + "ico" + imgFlag];
+        ctx.drawImage(img, xPosition - imgOffset, yPosition - imgOffset, labelImgSize, labelImgSize);
       } else {
         //En caso de no tener imagen dibuja el texto
         ctx.fillStyle = "#e8d5b0";
