@@ -40,6 +40,20 @@ const initialConfig = {
       ico: "square",
       colorIco: "purple",
     },
+    {
+      color: "#9C5425",
+      areaColor: "#0021c7",
+      label: "cable 2",
+      image: "",
+    },
+    {
+      color: "#CD717C",
+      areaColor: "",
+      label: "cable 3",
+      image: "",
+      ico: "square",
+      colorIco: "purple",
+    },
   ],
   target: [
     {
