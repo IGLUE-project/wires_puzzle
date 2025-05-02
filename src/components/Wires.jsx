@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../assets/scss/Wires.scss";
 import ReactDOMServer from "react-dom/server";
 import { iconMap } from "../icons/shapesIcons";
+import { THEMES } from "../constants/constants";
 
 let mouseX = 0;
 let mouseY = 0;
@@ -21,7 +22,7 @@ const preloadImages = async (wires, tarjets, theme) => {
     });
 
   const loadSvg = (svgImg, color, name) => {
-    const svgString = ReactDOMServer.renderToString(svgImg({ width: 1, height: 1, color }));
+    const svgString = ReactDOMServer.renderToString(svgImg({ width: 50, height: 50, color }));
     const url = URL.createObjectURL(new Blob([svgString], { type: "image/svg+xml;charset=utf-8" }));
     const svgImage = new Image();
     svgImage.src = url;
@@ -80,6 +81,14 @@ const FixWiringGame = ({ config, setConnections, size }) => {
     const canvasHeight = size.height * 0.64;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+
+    const ropeTexture = new Image();
+    ropeTexture.src = "/src/assets/images/rope_texture.jpg";
+    let ropePattern = null;
+    ropeTexture.onload = () => {
+      ropePattern = ctx.createPattern(ropeTexture, "repeat");
+    };
+
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
@@ -93,7 +102,7 @@ const FixWiringGame = ({ config, setConnections, size }) => {
     const WAWidth = canvasWidth / wires.length;
     const WAHeight = canvasHeight * 0.2;
 
-    //Variables que dependen del tamaño de la pantalla
+    //Variables que dependen del tamaño de la pantalla y del numero de cables
     const fontSize = `${WAWidth / 8}px Arial`;
     const wireWidth = WAWidth * 0.05; // Grosor del cable
     const labelImgSize = WAWidth / 6; // Tamaño de la imagen de la etiqueta (areas)
@@ -122,7 +131,8 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         //Dibuja los cables conectados
         if (connections[i] !== null) {
           // Se calcula 2/3 del jack ya que al estar conectado no se ve todo el jack
-          const jackSize = jackSizeH * 0.66;
+          let jackSize = jackSizeH * 0.66;
+          if (config.theme.name === THEMES.ANCIENT) jackSize = jackSizeH;
           drawLine(
             wire.color,
             i * WAWidth + WAWidth / 2,
@@ -168,15 +178,19 @@ const FixWiringGame = ({ config, setConnections, size }) => {
         if (connected !== null) {
           const x = xPosition - connectedJackWidth / 2;
           const y = WAHeight;
-          const radius = connectedJackWidth / 2;
-          //Simula el rectangulo del jack conectado
-          ctx.fillStyle = wires[connected].color;
-          ctx.fillRect(x, y + radius, connectedJackWidth, connectedJackHeight - radius);
-          ctx.beginPath();
-          // Dibuja una esfera en la parte superior del rectángulo para simular el jack conectado
-          ctx.arc(x + connectedJackWidth / 2, y + radius, radius, Math.PI, 0, false);
-          ctx.closePath();
-          ctx.fill();
+          if (config.theme.name === THEMES.ANCIENT) {
+            ctx.drawImage(preloadedImages[connected], x - jackSizeW * 0.37, y, jackSizeW, jackSizeH);
+          } else {
+            const radius = connectedJackWidth / 2;
+            //Simula el rectangulo del jack conectado
+            ctx.fillStyle = wires[connected].color;
+            ctx.fillRect(x, y + radius, connectedJackWidth, connectedJackHeight - radius);
+            ctx.beginPath();
+            // Dibuja una esfera en la parte superior del rectángulo para simular el jack conectado
+            ctx.arc(x + connectedJackWidth / 2, y + radius, radius, Math.PI, 0, false);
+            ctx.closePath();
+            ctx.fill();
+          }
         }
       });
 
@@ -208,13 +222,13 @@ const FixWiringGame = ({ config, setConnections, size }) => {
     // Dibuja un rectángulo
     function drawRect(color, x, y, w, h) {
       // fill según el tema
-      if (config.theme.name === "basic") {
+      if (config.theme.name === THEMES.BASIC) {
         ctx.fillStyle = "#2d1f1c";
         ctx.strokeStyle = "black";
-      } else if (config.theme.name === "futuristic") {
+      } else if (config.theme.name === THEMES.FUTURISTIC) {
         ctx.fillStyle = "#12102d";
         ctx.strokeStyle = "#8863a3";
-      } else if (config.theme.name === "ancient") {
+      } else if (config.theme.name === THEMES.ANCIENT) {
         ctx.fillStyle = "#7f482f";
         ctx.strokeStyle = "black";
       }
@@ -226,29 +240,30 @@ const FixWiringGame = ({ config, setConnections, size }) => {
 
     // Dibuja una línea entre dos puntos
     function drawLine(color, x1, y1, x2, y2) {
-      //Genera un gradiente de color para dar textura a el cable
-      const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-      const darkerColor = shadeColor(color, -40);
-      const lighterColor = shadeColor(color, 40);
-      gradient.addColorStop(0, darkerColor);
-      gradient.addColorStop(0.5, lighterColor);
-      gradient.addColorStop(1, darkerColor);
       const midX = (x1 + x2) / 2;
-      const midY = (y1 + y2) / 2 + 50; // Agrega un poco de curvatura
+      const midY = (y1 + y2) / 2 + 50; // Se suma para dar curvatura
 
-      //Dibuja el borde del cable
-      ctx.strokeStyle = shadeColor(color, -50); // Color del borde un poco mas oscuro
-      ctx.lineWidth = wireWidth + wireWidth * 0.2; // Grosor un poco mañor que el del cable
-      ctx.lineCap = "round";
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.quadraticCurveTo(midX, midY, x2, y2);
-      ctx.stroke();
+      // Gradiente para dar sensación de textura
+      const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+      gradient.addColorStop(0, shadeColor(color, -40));
+      gradient.addColorStop(0.5, shadeColor(color, 40));
+      gradient.addColorStop(1, shadeColor(color, -40));
 
-      // Dibuja el cable
-      ctx.strokeStyle = gradient;
-      ctx.lineWidth = wireWidth; // El grosor real del cable
-      ctx.stroke();
+      //Dibuja el cable pasandole el estilo, opacidad y el grosor del cable
+      const draw = (style, alpha = 1, width = wireWidth) => {
+        ctx.strokeStyle = style;
+        ctx.globalAlpha = alpha;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(midX, midY, x2, y2);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      };
+
+      draw(shadeColor(color, -50), 1, wireWidth + wireWidth * 0.2); // borde de el cable
+      if (config.theme.name === THEMES.ANCIENT) draw(ropePattern); // patrón textura cuerda
+      draw(gradient, 0.6); // cable
     }
 
     // Función para oscurecer o aclarar un color en formato hexadecimal
