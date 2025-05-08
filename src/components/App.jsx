@@ -91,7 +91,7 @@ const initialConfig = {
     },
   ],
   config: {
-    theme: THEMES.BASIC,
+    theme: THEMES.FUTURISTIC,
   },
 };
 

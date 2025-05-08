@@ -43,19 +43,12 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
           className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}
         ></div>
       </div>
-      <div className="switchContainer">
-        <div
-          className={`lever ${activo ? "active" : ""}`}
-          style={{
-            width: size.width * 0.04, // escalar según pantalla
-            height: size.height * 0.01,
-            transform: activo ? "translateY(-180%)" : "translateY(180%)",
-            position: "absolute",
-            borderRadius: "5px",
-          }}
-        ></div>
-        <div className="handle"></div>
-      </div>
+      <img
+        className="switch-img"
+        src={activo ? theme.switchOnImg : theme.switchOffImg}
+        alt=""
+        onClick={togglePalanca}
+      />
 
       <audio id="audio_connection" src={theme.connectionAudio} autostart="false" preload="auto" />
       <audio id="audio_fail-connection" src={theme.failAudio} autostart="false" preload="auto" />
