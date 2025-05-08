@@ -44,24 +44,21 @@ export default function MainScreen({ show, config, solvePuzzle, solved, solvedTr
 
   return (
     <div id="MainScreen" className={"screen_wrapper" + (show ? "" : " screen_hidden")}>
-      {/* <img className="bg-image" src={config.theme.backgroundImgCloseUp}></img> */}
       <div
         className="frame"
         style={{ backgroundImage: `url(${config.theme.backgroundImgCloseUp})`, height: "100%", width: "100%" }}
       >
         <div className="wires">
           {connections.length > 0 && (
-            <FixWiringGame config={config} connections={connections} setConnections={setConnections} size={size} />
+            <FixWiringGame
+              config={config}
+              connections={connections}
+              setConnections={setConnections}
+              size={size}
+              solved={solved}
+            />
           )}
         </div>
-        {/* <img
-          className="panelopen"
-          src={config.theme.panelOpenImg}
-          // style={{ height: size.height * 0.7, width: size.width * 0.8 }}
-          alt="panel electrico abierto"
-        /> */}
-        {/* <div className="switch" style={{ height: size.height * 0.1, width: size.width * 0.1 }}>
-        </div> */}
         <Switch solved={solved} onClick={click} solvedTrigger={solvedTrigger} theme={config.theme} size={size} />
       </div>
     </div>

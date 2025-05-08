@@ -54,7 +54,7 @@ const preloadImages = async (wires, tarjets, theme) => {
   return images;
 };
 
-const FixWiringGame = ({ config, setConnections, size }) => {
+const FixWiringGame = ({ config, setConnections, size, solved }) => {
   const canvasRef = useRef(null);
   const [preloadedImages, setPreloadedImages] = useState(null);
 
@@ -355,17 +355,23 @@ const FixWiringGame = ({ config, setConnections, size }) => {
     // Bucle de animación para actualizar la pantalla
     function loop() {
       requestAnimationFrame(loop);
-      drawGame();
+      // Si se ha resuelto el puzzle, se deja de actualizar el juego
+      if (!solved) drawGame();
+      else {
+        clearEvents();
+      }
+    }
+
+    function clearEvents() {
+      canvas.removeEventListener("mousemove", mouseMoveHandler);
+      canvas.removeEventListener("mousedown", mouseDownHandler);
+      canvas.removeEventListener("mouseup", mouseUpHandler);
     }
 
     loop();
     // Limpia los eventos al desmontar el componente
-    return () => {
-      canvas.removeEventListener("mousemove", mouseMoveHandler);
-      canvas.removeEventListener("mousedown", mouseDownHandler);
-      canvas.removeEventListener("mouseup", mouseUpHandler);
-    };
-  }, [preloadedImages, size]);
+    return () => clearEvents();
+  }, [preloadedImages, size, solved]);
 
   return (
     <>

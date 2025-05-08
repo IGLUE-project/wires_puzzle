@@ -120,17 +120,17 @@ export default function App() {
       LocalStorage.removeSetting("played_door");
     };
     escapp = new ESCAPP(GLOBAL_CONFIG.escapp);
-    // escapp.validate((success, er_state) => {
-    //   console.log("ESCAPP validation", success, er_state);
-    //   try {
-    //     if (success) {
-    //       //ha ido bien, restauramos el estado recibido
-    //       restoreState(er_state);
-    //     }
-    //   } catch (e) {
-    //     console.error(e);
-    //   }
-    // });
+    escapp.validate((success, er_state) => {
+      console.log("ESCAPP validation", success, er_state);
+      try {
+        if (success) {
+          //ha ido bien, restauramos el estado recibido
+          restoreState(er_state);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    });
     loadConfig(initialConfig);
 
     setLoading(false);
@@ -151,7 +151,7 @@ export default function App() {
   const solvePuzzle = (solution) => {
     const solutionStr = solution.map((s) => (s == null ? "-1" : s + 1)).join(",");
     console.log(solutionStr);
-    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, JSON.stringify(solutionStr), {}, (success) => {
+    escapp.submitPuzzle(GLOBAL_CONFIG.escapp.puzzleId, solutionStr, {}, (success) => {
       if (!success) {
         // alert("ta mal");
       } else {
