@@ -77,8 +77,8 @@ const FixWiringGame = ({ config, setConnections, size, solved }) => {
   useEffect(() => {
     if (!preloadedImages) return;
     //El tamaño del canvas depende del tamaño de la pantalla
-    const canvasWidth = size.width * 0.75;
-    const canvasHeight = size.height * 0.64;
+    const canvasWidth = size.width * 0.88;
+    const canvasHeight = size.height * 0.76;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 

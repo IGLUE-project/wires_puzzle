@@ -46,9 +46,17 @@ export default function MainScreen({ show, config, solvePuzzle, solved, solvedTr
     <div id="MainScreen" className={"screen_wrapper" + (show ? "" : " screen_hidden")}>
       <div
         className="frame"
-        style={{ backgroundImage: `url(${config.theme.backgroundImgCloseUp})`, height: "100%", width: "100%" }}
+        style={{
+          backgroundImage: `url(${config.theme.backgroundImgCloseUp})`,
+          height: "100%",
+          width: "100%",
+          gap: size.width * 0.024,
+        }}
       >
-        <div className="wires">
+        <div
+          className="wires"
+          style={{ marginLeft: size.height * 0.05 + size.width * 0.024, marginTop: size.height * 0.02 }}
+        >
           {connections.length > 0 && (
             <FixWiringGame
               config={config}
