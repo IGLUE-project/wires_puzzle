@@ -132,7 +132,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
         if (connections[i] !== null) {
           // Se calcula 2/3 del jack ya que al estar conectado no se ve todo el jack
           let jackSize = jackSizeH * 0.66;
-          if (config.skin === THEMES.ANCIENT) jackSize = jackSizeH;
+          if (config.skin === THEMES.RETRO) jackSize = jackSizeH;
           drawLine(
             wire.color,
             i * WAWidth + WAWidth / 2,
@@ -178,7 +178,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
         if (connected !== null) {
           const x = xPosition - connectedJackWidth / 2;
           const y = WAHeight;
-          if (config.skin === THEMES.ANCIENT) {
+          if (config.skin === THEMES.RETRO) {
             ctx.drawImage(preloadedImages[connected], x - jackSizeW * 0.37, y, jackSizeW, jackSizeH);
           } else {
             const radius = connectedJackWidth / 2;
@@ -222,14 +222,17 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     // Dibuja un rectángulo
     function drawRect(color, x, y, w, h) {
       // fill según el tema
-      if (config.skin === THEMES.BASIC) {
+      if (config.skin === THEMES.BASIC || config.skin === THEMES.STANDARD) {
         ctx.fillStyle = "#2d1f1c";
         ctx.strokeStyle = "black";
       } else if (config.skin === THEMES.FUTURISTIC) {
         ctx.fillStyle = "#12102d";
         ctx.strokeStyle = "#8863a3";
-      } else if (config.skin === THEMES.ANCIENT) {
+      } else if (config.skin === THEMES.RETRO) {
         ctx.fillStyle = "#7f482f";
+        ctx.strokeStyle = "black";
+      } else {
+        ctx.fillStyle = "#2d1f1c";
         ctx.strokeStyle = "black";
       }
 
@@ -263,7 +266,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
       };
 
       draw(shadeColor(color, -50), 1, wireWidth + wireWidth * 0.2); // borde de el cable
-      if (config.skin === THEMES.ANCIENT) draw(ropePattern); // patrón textura cuerda
+      if (config.skin === THEMES.RETRO) draw(ropePattern); // patrón textura cuerda
       draw(gradient, 0.6); // cable
     }
 
