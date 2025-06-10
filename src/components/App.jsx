@@ -85,12 +85,17 @@ export default function App() {
     Utils.log("Restore application state based on escape room state:", erState);
     // Si el puzle está resuelto lo ponemos en posicion de resuelto
     if (escapp.getAllPuzzlesSolved()) {
-      if (appSettings.actionAfterSolve === "SHOW_MESSAGE") {
-        setSolution(erState.puzzleData[escapp.getSettings().nextPuzzleId].solution || null);
-        setTimeout(() => {
-          setSolved(true);
-          setSolvedTrigger((prev) => prev + 1);
-        }, 500);
+      if (appSettings.actionAfterSolve === "LOAD_SOLUTION") {
+        if (escapp.getAllPuzzlesSolved()) {
+          let wheelSolution = escapp.getLastSolution();
+          if (typeof wheelSolution !== "undefined") {
+            setSolution(wheelSolution);
+            setTimeout(() => {
+              setSolved(true);
+              setSolvedTrigger((prev) => prev + 1);
+            }, 500);
+          }
+        }
       }
     }
   }

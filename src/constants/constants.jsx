@@ -26,7 +26,7 @@ export const ESCAPP_CLIENT_SETTINGS = {
   imagesPath: "./images/",
 };
 
-export const ALLOWED_ACTIONS = ["NONE", "SHOW_MESSAGE"];
+export const ALLOWED_ACTIONS = ["NONE", "LOAD_SOLUTION"];
 
 export const THEMES = {
   BASIC: "BASIC",
