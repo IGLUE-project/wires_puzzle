@@ -54,20 +54,20 @@ const preloadImages = async (wires, tarjets, theme) => {
   return images;
 };
 
-const FixWiringGame = ({ config, setConnections, size, solved }) => {
+const FixWiringGame = ({ config, connections, setConnections, size, solved }) => {
   const canvasRef = useRef(null);
   const [preloadedImages, setPreloadedImages] = useState(null);
 
   const connectorImg = new Image();
-  connectorImg.src = config.theme.connectionImg;
+  connectorImg.src = config.connectionImg;
   const backgroundImg = new Image();
-  backgroundImg.src = config.theme.panelBackgroundImg;
+  backgroundImg.src = config.panelBackgroundImg;
   const pickWireAudio = document.getElementById("audio_pick-wire");
   const plugWireAudio = document.getElementById("audio_plug-wire");
 
   useEffect(() => {
     const loadIcons = async () => {
-      const images = await preloadImages(config.wires, config.target, config.theme);
+      const images = await preloadImages(config.wires, config.target, config);
       setPreloadedImages(images);
     };
 
@@ -113,8 +113,8 @@ const FixWiringGame = ({ config, setConnections, size, solved }) => {
     const connectedJackHeight = WAWidth * 0.2; // Alto del jack conectado (rectangulo para simular el jack conectado)
 
     //control de cables conectados
-    let connections = [];
-    wires.forEach(() => connections.push(null));
+    // let connections = [];
+    // wires.forEach(() => connections.push(null));
 
     // Dibuja el juego
     function drawGame() {
@@ -132,7 +132,7 @@ const FixWiringGame = ({ config, setConnections, size, solved }) => {
         if (connections[i] !== null) {
           // Se calcula 2/3 del jack ya que al estar conectado no se ve todo el jack
           let jackSize = jackSizeH * 0.66;
-          if (config.theme.name === THEMES.ANCIENT) jackSize = jackSizeH;
+          if (config.skin === THEMES.ANCIENT) jackSize = jackSizeH;
           drawLine(
             wire.color,
             i * WAWidth + WAWidth / 2,
@@ -178,7 +178,7 @@ const FixWiringGame = ({ config, setConnections, size, solved }) => {
         if (connected !== null) {
           const x = xPosition - connectedJackWidth / 2;
           const y = WAHeight;
-          if (config.theme.name === THEMES.ANCIENT) {
+          if (config.skin === THEMES.ANCIENT) {
             ctx.drawImage(preloadedImages[connected], x - jackSizeW * 0.37, y, jackSizeW, jackSizeH);
           } else {
             const radius = connectedJackWidth / 2;
@@ -222,13 +222,13 @@ const FixWiringGame = ({ config, setConnections, size, solved }) => {
     // Dibuja un rectángulo
     function drawRect(color, x, y, w, h) {
       // fill según el tema
-      if (config.theme.name === THEMES.BASIC) {
+      if (config.skin === THEMES.BASIC) {
         ctx.fillStyle = "#2d1f1c";
         ctx.strokeStyle = "black";
-      } else if (config.theme.name === THEMES.FUTURISTIC) {
+      } else if (config.skin === THEMES.FUTURISTIC) {
         ctx.fillStyle = "#12102d";
         ctx.strokeStyle = "#8863a3";
-      } else if (config.theme.name === THEMES.ANCIENT) {
+      } else if (config.skin === THEMES.ANCIENT) {
         ctx.fillStyle = "#7f482f";
         ctx.strokeStyle = "black";
       }
@@ -263,7 +263,7 @@ const FixWiringGame = ({ config, setConnections, size, solved }) => {
       };
 
       draw(shadeColor(color, -50), 1, wireWidth + wireWidth * 0.2); // borde de el cable
-      if (config.theme.name === THEMES.ANCIENT) draw(ropePattern); // patrón textura cuerda
+      if (config.skin === THEMES.ANCIENT) draw(ropePattern); // patrón textura cuerda
       draw(gradient, 0.6); // cable
     }
 
@@ -371,13 +371,13 @@ const FixWiringGame = ({ config, setConnections, size, solved }) => {
     loop();
     // Limpia los eventos al desmontar el componente
     return () => clearEvents();
-  }, [preloadedImages, size, solved]);
+  }, [preloadedImages, size, solved, connections]);
 
   return (
     <>
-      <canvas ref={canvasRef} id="gameCanvas" className={`canvas-${config.theme.name}`} />
-      <audio id="audio_pick-wire" src={config.theme.wireAudio} autostart="false" preload="auto" />
-      <audio id="audio_plug-wire" src={config.theme.dropWireAudio} autostart="false" preload="auto" />
+      <canvas ref={canvasRef} id="gameCanvas" className={`canvas-${config.skin}`} />
+      <audio id="audio_pick-wire" src={config.wireAudio} autostart="false" preload="auto" />
+      <audio id="audio_plug-wire" src={config.dropWireAudio} autostart="false" preload="auto" />
     </>
   );
 };

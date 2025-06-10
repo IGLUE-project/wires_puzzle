@@ -18,6 +18,7 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
         }, 500);
       } else {
         document.getElementById("audio_connection").play();
+        setActivo(true);
       }
     }
   }, [solved, solvedTrigger]);
