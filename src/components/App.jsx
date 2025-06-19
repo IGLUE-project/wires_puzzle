@@ -2,19 +2,13 @@ import { useContext, useEffect, useRef, useState } from "react";
 import "./../assets/scss/app.scss";
 import "./../assets/scss/modal.scss";
 
-import {
-  ALLOWED_ACTIONS,
-  DEFAULT_APP_SETTINGS,
-  ESCAPP_CLIENT_SETTINGS,
-  THEME_ASSETS,
-} from "../constants/constants.jsx";
+import { DEFAULT_APP_SETTINGS, ESCAPP_CLIENT_SETTINGS, THEME_ASSETS } from "../constants/constants.jsx";
 import MainScreen from "./MainScreen.jsx";
 
 import { GlobalContext } from "./GlobalContext.jsx";
 
 export default function App() {
-  const { escapp, setEscapp, appSettings, setAppSettings, Storage, setStorage, Utils, I18n } =
-    useContext(GlobalContext);
+  const { escapp, setEscapp, appSettings, setAppSettings, Storage, setStorage, Utils, I18n } = useContext(GlobalContext);
   const hasExecutedEscappValidation = useRef(false);
 
   const [loading, setLoading] = useState(true);
@@ -85,11 +79,11 @@ export default function App() {
     Utils.log("Restore application state based on escape room state:", erState);
     // Si el puzle está resuelto lo ponemos en posicion de resuelto
     if (escapp.getAllPuzzlesSolved()) {
-      if (appSettings.actionAfterSolve === "LOAD_SOLUTION") {
-        if (escapp.getAllPuzzlesSolved()) {
-          let wheelSolution = escapp.getLastSolution();
-          if (typeof wheelSolution !== "undefined") {
-            setSolution(wheelSolution);
+      if (escapp.getAllPuzzlesSolved()) {
+        if (appSettings.actionWhenLoadingIfSolved) {
+          let _solution = erState.puzzleData[+escapp.getSettings().resourceId].solution || null;
+          if (typeof _solution !== "undefined") {
+            setSolution(_solution);
             setTimeout(() => {
               setSolved(true);
               setSolvedTrigger((prev) => prev + 1);
@@ -112,10 +106,6 @@ export default function App() {
     // Merge _appSettings with DEFAULT_APP_SETTINGS_SKIN to obtain final app settings
     _appSettings = Utils.deepMerge(DEFAULT_APP_SETTINGS_SKIN, _appSettings);
 
-    if (!ALLOWED_ACTIONS.includes(_appSettings.actionAfterSolve)) {
-      _appSettings.actionAfterSolve = DEFAULT_APP_SETTINGS.actionAfterSolve;
-    }
-
     //Init internacionalization module
     I18n.init(_appSettings);
 
@@ -135,7 +125,8 @@ export default function App() {
   }
 
   const solvePuzzle = (solution) => {
-    const solutionStr = solution.map((s) => (s == null ? "-1" : s + 1)).join(",");
+    const solutionStr = solution.map((s) => (s == null ? "" : s + 1)).join(";");
+    console.log(solutionStr);
     checkResult(solutionStr);
   };
 
@@ -166,19 +157,11 @@ export default function App() {
   return (
     <div
       id="global_wrapper"
-      className={`${
-        appSettings !== null && typeof appSettings.skin === "string" ? appSettings.skin.toLowerCase() : ""
-      }`}
+      className={`${appSettings !== null && typeof appSettings.skin === "string" ? appSettings.skin.toLowerCase() : ""}`}
     >
       <div className={`main-background ${fail ? "fail" : ""}`}>
         {!loading && (
-          <MainScreen
-            config={appSettings}
-            solvePuzzle={solvePuzzle}
-            solved={solved}
-            solvedTrigger={solvedTrigger}
-            solution={solution}
-          />
+          <MainScreen config={appSettings} solvePuzzle={solvePuzzle} solved={solved} solvedTrigger={solvedTrigger} solution={solution} />
         )}
       </div>
     </div>

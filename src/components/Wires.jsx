@@ -83,7 +83,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     const ctx = canvas.getContext("2d");
 
     const ropeTexture = new Image();
-    ropeTexture.src = "/src/assets/images/rope_texture.jpg";
+    ropeTexture.src = "images/rope_texture.jpg";
     let ropePattern = null;
     ropeTexture.onload = () => {
       ropePattern = ctx.createPattern(ropeTexture, "repeat");
@@ -138,7 +138,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
             i * WAWidth + WAWidth / 2,
             canvasHeight - WAHeight,
             connections[i] * WAWidth + WAWidth / 2,
-            WAHeight + jackSize,
+            WAHeight + jackSize
           );
           // Si el cable no está conectado dibuja el jack en el area de abajo
         } else {
@@ -148,7 +148,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
               i * WAWidth + WAWidth / 2 - jackSizeW / 2,
               canvasHeight - WAHeight - jackSizeH / 2,
               jackSizeW,
-              jackSizeH,
+              jackSizeH
             );
           }
         }
@@ -198,21 +198,9 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
       if (selectedWireIndex > -1) {
         try {
           //Dibuja la linea arrastrandose
-          drawLine(
-            wires[selectedWireIndex].color,
-            selectedWireIndex * WAWidth + WAWidth / 2,
-            canvasHeight - WAHeight,
-            mouseX,
-            mouseY,
-          );
+          drawLine(wires[selectedWireIndex].color, selectedWireIndex * WAWidth + WAWidth / 2, canvasHeight - WAHeight, mouseX, mouseY);
           //Dibuja la imagen del jack en la punta del cable arrastrandose
-          ctx.drawImage(
-            preloadedImages[selectedWireIndex],
-            mouseX - jackSizeW / 2,
-            mouseY - jackSizeH,
-            jackSizeW,
-            jackSizeH,
-          );
+          ctx.drawImage(preloadedImages[selectedWireIndex], mouseX - jackSizeW / 2, mouseY - jackSizeH, jackSizeW, jackSizeH);
         } catch (e) {
           console.error("Error al dibujar la línea:", e);
         }

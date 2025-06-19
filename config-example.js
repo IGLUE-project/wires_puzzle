@@ -4,13 +4,10 @@ import { THEMES } from "./src/constants/constants";
 
 export let ESCAPP_APP_SETTINGS = {
   //Settings that can be specified by the authors
-  skin: THEMES.BASIC, //skin can be "STANDARD", "RETRO" or "FUTURISTIC" or "BASIC".
+  skin: THEMES.RETRO, //skin can be "STANDARD", "RETRO" or "FUTURISTIC" or "BASIC".
   // backgroundImg: "NONE", //background can be "NONE" or a URL.
-  actionAfterSolve: "LOAD_SOLUTION", //actionAfterSolve can be "NONE" or "LOAD_SOLUTION".
+  actionWhenLoadingIfSolved: true,
   //message: "Custom message",
-
-  //type: can be "LETTERS", "NUMBERS", "SHAPES", "COLORED SHAPES", "COLORS", "CUSTOM".
-  //areaColor: can be a color or "RAINBOW" for a rainbow gradient.
 
   wires: [
     {
@@ -23,7 +20,7 @@ export let ESCAPP_APP_SETTINGS = {
       color: "#645B90",
       areaColor: "",
       label: "cable 1",
-      image: "/src/assets/images/estrella.svg",
+      image: "images/estrella.svg",
     },
     {
       color: "#9C5425",
@@ -69,7 +66,7 @@ export let ESCAPP_APP_SETTINGS = {
     {
       areaColor: "#0021c7",
       label: "target 2",
-      image: "/src/assets/images/circulo.png",
+      image: "images/circulo.png",
     },
     {
       areaColor: "#c700b5",
@@ -95,8 +92,9 @@ export let ESCAPP_APP_SETTINGS = {
   locale: "es",
 
   escappClientSettings: {
-    endpoint: "https://escapp.etsisi.upm.es/api/escapeRooms/153",
-    linkedPuzzleIds: [3],
+    // endpoint: "https://escapp.etsisi.upm.es/api/escapeRooms/153",
+    endpoint: "https://escapp.es/api/escapeRooms/260",
+    linkedPuzzleIds: [1],
     rtc: false,
   },
 };

@@ -18,10 +18,9 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
 
   useEffect(() => {
     if (solution) {
-      const solutionParsed = solution.split(",").map((s) => (s === "-1" ? null : Number(s) - 1));
+      const solutionParsed = solution.split(";").map((s) => (s === "" ? null : Number(s) - 1));
 
-      if (solutionParsed.length === config.wires.length && solutionParsed.every((s) => s != null))
-        setConnections(solutionParsed);
+      setConnections(solutionParsed);
     }
   }, [solution]);
 
@@ -62,18 +61,9 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
           gap: size.width * 0.024,
         }}
       >
-        <div
-          className="wires"
-          style={{ marginLeft: size.height * 0.05 + size.width * 0.024, marginTop: size.height * 0.02 }}
-        >
+        <div className="wires" style={{ marginLeft: size.height * 0.05 + size.width * 0.024, marginTop: size.height * 0.02 }}>
           {connections.length > 0 && (
-            <FixWiringGame
-              config={config}
-              connections={connections}
-              setConnections={setConnections}
-              size={size}
-              solved={solved}
-            />
+            <FixWiringGame config={config} connections={connections} setConnections={setConnections} size={size} solved={solved} />
           )}
         </div>
         <Switch solved={solved} onClick={click} solvedTrigger={solvedTrigger} theme={config} size={size} />
