@@ -4,13 +4,13 @@ import { THEMES, TYPES } from "./src/constants/constants";
 
 export let ESCAPP_APP_SETTINGS = {
   //Settings that can be specified by the authors
-  skin: THEMES.RETRO, //skin can be "STANDARD", "RETRO" or "FUTURISTIC" or "BASIC".
+  skin: THEMES.FUTURISTIC, //skin can be "STANDARD", "RETRO" or "FUTURISTIC" or "BASIC".
   // backgroundImg: "NONE", //background can be "NONE" or a URL.
   actionWhenLoadingIfSolved: false,
   //message: "Custom message",
 
-  wiresType: TYPES.COLORS,
-  targetsType: "SHAPES",
+  wiresType: TYPES.COLORED_SHAPES,
+  targetsType: TYPES.NUMBERS,
   wiresLength: 6,
 
   customWires: [
@@ -37,7 +37,7 @@ export let ESCAPP_APP_SETTINGS = {
       areaColor: "",
       label: "cable 3",
       image: "",
-      ico: "square",
+      ico: "Square",
       colorIco: "purple",
     },
     {
@@ -51,7 +51,7 @@ export let ESCAPP_APP_SETTINGS = {
       areaColor: "",
       label: "cable 3",
       image: "",
-      ico: "square",
+      ico: "Square",
       colorIco: "purple",
     },
   ],
@@ -60,7 +60,7 @@ export let ESCAPP_APP_SETTINGS = {
       areaColor: "#3abf19",
       label: "5",
       image: "",
-      ico: "triangle",
+      ico: "Triangle",
     },
     {
       areaColor: "#c70000",
@@ -76,7 +76,7 @@ export let ESCAPP_APP_SETTINGS = {
       areaColor: "#c700b5",
       label: "target 3",
       image: "",
-      ico: "square",
+      ico: "Square",
       colorIco: "red",
     },
     {

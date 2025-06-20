@@ -47,12 +47,7 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
           className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}
         ></div>
       </div>
-      <img
-        className="switch-img"
-        src={activo ? theme.switchOnImg : theme.switchOffImg}
-        alt=""
-        onClick={togglePalanca}
-      />
+      <img className="switch-img" src={activo ? theme.switchOnImg : theme.switchOffImg} alt="" onClick={togglePalanca} draggable="false" />
 
       <audio id="audio_connection" src={theme.connectionAudio} autostart="false" preload="auto" />
       <audio id="audio_fail-connection" src={theme.failAudio} autostart="false" preload="auto" />
