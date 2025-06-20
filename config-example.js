@@ -1,15 +1,19 @@
 //Copy this file to config.js and specify your own settings
 
-import { THEMES } from "./src/constants/constants";
+import { THEMES, TYPES } from "./src/constants/constants";
 
 export let ESCAPP_APP_SETTINGS = {
   //Settings that can be specified by the authors
   skin: THEMES.RETRO, //skin can be "STANDARD", "RETRO" or "FUTURISTIC" or "BASIC".
   // backgroundImg: "NONE", //background can be "NONE" or a URL.
-  actionWhenLoadingIfSolved: true,
+  actionWhenLoadingIfSolved: false,
   //message: "Custom message",
 
-  wires: [
+  wiresType: TYPES.COLORS,
+  targetsType: "SHAPES",
+  wiresLength: 6,
+
+  customWires: [
     {
       color: "#91933D",
       areaColor: "",
@@ -51,7 +55,7 @@ export let ESCAPP_APP_SETTINGS = {
       colorIco: "purple",
     },
   ],
-  target: [
+  customTargets: [
     {
       areaColor: "#3abf19",
       label: "5",

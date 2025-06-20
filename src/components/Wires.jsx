@@ -10,6 +10,7 @@ let mouseY = 0;
 // Preload images and SVGs
 const preloadImages = async (wires, targets, theme) => {
   const images = {};
+  const opacity = theme.skin === THEMES.RETRO ? 0.8 : 1; // Opacity for retro theme
 
   const loadImage = (src, name) =>
     new Promise((resolve) => {
@@ -37,16 +38,16 @@ const preloadImages = async (wires, targets, theme) => {
 
   await Promise.all([
     ...wires.map((wire, i) => {
-      const wireImagePromise = loadSvg(theme.wire, wire.color, i).then(() => {
+      const wireImagePromise = loadSvg(theme.wire, withOpacity(wire.color, opacity), i).then(() => {
         if (wire.image) return loadImage(wire.image, i + "img");
-        else if (wire.ico) return loadSvg(iconMap[wire.ico], wire.colorIco, i + "ico");
+        else if (wire.ico) return loadSvg(iconMap[wire.ico], withOpacity(wire.colorIco, opacity), i + "ico");
         Promise.resolve();
       });
       return wireImagePromise;
     }),
     ...targets.map((target, i) => {
       if (target.image) return loadImage(target.image, i + "img target");
-      else if (target.ico) return loadSvg(iconMap[target.ico], target.colorIco, i + "ico target");
+      else if (target.ico) return loadSvg(iconMap[target.ico], withOpacity(target.colorIco, opacity), i + "ico target");
       Promise.resolve();
     }),
   ]);
@@ -111,25 +112,6 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     const connectorImgSize = WAWidth / 5; // Tamaño de la imagen del conector del area de arriba
     const connectedJackWidth = WAWidth * 0.1; // Ancho del jack conectado (rectangulo para simular el jack conectado)
     const connectedJackHeight = WAWidth * 0.2; // Alto del jack conectado (rectangulo para simular el jack conectado)
-
-    //control de cables conectados
-    // let connections = [];
-    // wires.forEach(() => connections.push(null));
-
-    function withOpacity(color, opacity = 1) {
-      const ctx = document.createElement("canvas").getContext("2d");
-      ctx.fillStyle = color;
-      const computed = ctx.fillStyle; // Convierte el color al formato válido
-      if (computed.startsWith("rgb")) {
-        return computed.replace("rgb", "rgba").replace(")", `, ${opacity})`);
-      }
-      return (
-        computed +
-        Math.round(opacity * 255)
-          .toString(16)
-          .padStart(2, "0")
-      ); // Para hex
-    }
 
     // Dibuja el juego
     function drawGame() {
@@ -394,4 +376,18 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
   );
 };
 
+function withOpacity(color, opacity = 1) {
+  const ctx = document.createElement("canvas").getContext("2d");
+  ctx.fillStyle = color;
+  const computed = ctx.fillStyle; // Convierte el color al formato válido
+  if (computed.startsWith("rgb")) {
+    return computed.replace("rgb", "rgba").replace(")", `, ${opacity})`);
+  }
+  return (
+    computed +
+    Math.round(opacity * 255)
+      .toString(16)
+      .padStart(2, "0")
+  ); // Para hex
+}
 export default FixWiringGame;
