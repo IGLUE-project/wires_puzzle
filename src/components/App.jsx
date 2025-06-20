@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import "./../assets/scss/app.scss";
 import "./../assets/scss/modal.scss";
 
-import { DEFAULT_APP_SETTINGS, ESCAPP_CLIENT_SETTINGS, THEME_ASSETS } from "../constants/constants.jsx";
+import { COLORS, DEFAULT_APP_SETTINGS, ESCAPP_CLIENT_SETTINGS, ICONS, THEME_ASSETS, TYPES } from "../constants/constants.jsx";
 import MainScreen from "./MainScreen.jsx";
 
 import { GlobalContext } from "./GlobalContext.jsx";
@@ -113,6 +113,13 @@ export default function App() {
       _appSettings.message = I18n.getTrans("i.message");
     }
 
+    _appSettings.wires =
+      _appSettings.wiresType === TYPES.CUSTOM ? _appSettings.customWires : createResource(_appSettings.wiresType, _appSettings.wiresLength);
+    _appSettings.targets =
+      _appSettings.targetsType === TYPES.CUSTOM
+        ? _appSettings.customTargets
+        : createResource(_appSettings.targetsType, _appSettings.wiresLength);
+
     //Change HTTP protocol to HTTPs in URLs if necessary
     _appSettings = Utils.checkUrlProtocols(_appSettings);
 
@@ -122,6 +129,34 @@ export default function App() {
     //Utils.preloadVideos(["videos/some_video.mp4"]);
     Utils.log("App settings:", _appSettings);
     return _appSettings;
+  }
+
+  function createResource(type, length) {
+    let resource = null;
+    switch (type) {
+      case TYPES.NUMBERS:
+        resource = (_, j) => ({ label: String(j + 1) });
+        break;
+      case TYPES.COLORS:
+        resource = (_, j) => ({ areaColor: COLORS[j % COLORS.length] || "" });
+        break;
+      case TYPES.SHAPES:
+        resource = (_, j) => ({ ico: ICONS[j % ICONS.length] || "" });
+        break;
+      case TYPES.COLORED_SHAPES:
+        resource = (_, j) => ({ ico: ICONS[j % ICONS.length] || "", colorIco: COLORS[j % COLORS.length] });
+        break;
+      default:
+        resource = (_, j) => ({ label: String.fromCharCode(65 + (j % 26)) });
+    }
+
+    return Array.from({ length }, (_, j) => {
+      const base = resource(_, j);
+      base.color = COLORS[j % COLORS.length] || "";
+      return base;
+    });
+
+    return Array.from({ length }, (_, j) => resource(_, j));
   }
 
   const solvePuzzle = (solution) => {

@@ -8,7 +8,7 @@ let mouseX = 0;
 let mouseY = 0;
 
 // Preload images and SVGs
-const preloadImages = async (wires, tarjets, theme) => {
+const preloadImages = async (wires, targets, theme) => {
   const images = {};
 
   const loadImage = (src, name) =>
@@ -44,7 +44,7 @@ const preloadImages = async (wires, tarjets, theme) => {
       });
       return wireImagePromise;
     }),
-    ...tarjets.map((target, i) => {
+    ...targets.map((target, i) => {
       if (target.image) return loadImage(target.image, i + "img target");
       else if (target.ico) return loadSvg(iconMap[target.ico], target.colorIco, i + "ico target");
       Promise.resolve();
@@ -67,7 +67,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
 
   useEffect(() => {
     const loadIcons = async () => {
-      const images = await preloadImages(config.wires, config.target, config);
+      const images = await preloadImages(config.wires, config.targets, config);
       setPreloadedImages(images);
     };
 
@@ -95,10 +95,10 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     //cables de abajo
     const wires = config.wires;
     //areas de arriba
-    const targets = config.target;
+    const targets = config.targets;
     //controla el cable que estás arrastrando
     let selectedWireIndex = -1;
-    //area de los cables y los tarjets dependiendo del numero de cables y tamaño de pantalla
+    //area de los cables y los targets dependiendo del numero de cables y tamaño de pantalla
     const WAWidth = canvasWidth / wires.length;
     const WAHeight = canvasHeight * 0.2;
 
@@ -116,6 +116,21 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     // let connections = [];
     // wires.forEach(() => connections.push(null));
 
+    function withOpacity(color, opacity = 1) {
+      const ctx = document.createElement("canvas").getContext("2d");
+      ctx.fillStyle = color;
+      const computed = ctx.fillStyle; // Convierte el color al formato válido
+      if (computed.startsWith("rgb")) {
+        return computed.replace("rgb", "rgba").replace(")", `, ${opacity})`);
+      }
+      return (
+        computed +
+        Math.round(opacity * 255)
+          .toString(16)
+          .padStart(2, "0")
+      ); // Para hex
+    }
+
     // Dibuja el juego
     function drawGame() {
       // Color de fondo para generar un borde
@@ -127,14 +142,14 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
       // Dibuja los cuadros de abajo y los cables conectados
       wires.forEach((wire, i) => {
         //Dibuja el area de cada uno de los cuadros de abajo
-        drawRect(wire.color, WAWidth * i, canvasHeight - WAHeight, WAWidth, WAHeight);
+        drawRect(withOpacity(wire.color), WAWidth * i, canvasHeight - WAHeight, WAWidth, WAHeight);
         //Dibuja los cables conectados
         if (connections[i] !== null) {
           // Se calcula 2/3 del jack ya que al estar conectado no se ve todo el jack
           let jackSize = jackSizeH * 0.66;
           if (config.skin === THEMES.RETRO) jackSize = jackSizeH;
           drawLine(
-            wire.color,
+            withOpacity(wire.color),
             i * WAWidth + WAWidth / 2,
             canvasHeight - WAHeight,
             connections[i] * WAWidth + WAWidth / 2,
@@ -183,7 +198,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
           } else {
             const radius = connectedJackWidth / 2;
             //Simula el rectangulo del jack conectado
-            ctx.fillStyle = wires[connected].color;
+            ctx.fillStyle = withOpacity(wires[connected].color);
             ctx.fillRect(x, y + radius, connectedJackWidth, connectedJackHeight - radius);
             ctx.beginPath();
             // Dibuja una esfera en la parte superior del rectángulo para simular el jack conectado
@@ -198,7 +213,13 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
       if (selectedWireIndex > -1) {
         try {
           //Dibuja la linea arrastrandose
-          drawLine(wires[selectedWireIndex].color, selectedWireIndex * WAWidth + WAWidth / 2, canvasHeight - WAHeight, mouseX, mouseY);
+          drawLine(
+            withOpacity(wires[selectedWireIndex].color),
+            selectedWireIndex * WAWidth + WAWidth / 2,
+            canvasHeight - WAHeight,
+            mouseX,
+            mouseY
+          );
           //Dibuja la imagen del jack en la punta del cable arrastrandose
           ctx.drawImage(preloadedImages[selectedWireIndex], mouseX - jackSizeW / 2, mouseY - jackSizeH, jackSizeW, jackSizeH);
         } catch (e) {
@@ -279,7 +300,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
         const imgOffset = labelImgSize / 2; // Offset para centrar la imagen
         const img = wire.image ? preloadedImages[i + "img" + imgFlag] : preloadedImages[i + "ico" + imgFlag];
         ctx.drawImage(img, xPosition - imgOffset, yPosition - imgOffset, labelImgSize, labelImgSize);
-      } else {
+      } else if (wire.label) {
         //En caso de no tener imagen dibuja el texto
         ctx.fillStyle = "#e8d5b0";
         ctx.font = fontSize;

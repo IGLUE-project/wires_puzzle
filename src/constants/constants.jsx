@@ -4,6 +4,13 @@ export const DEFAULT_APP_SETTINGS = {
   skin: "STANDARD",
   actionWhenLoadingIfSolved: true,
   message: undefined,
+  wires: [],
+  customWires: [],
+  targets: [],
+  customTargets: [],
+  wiresType: "NUMBERS",
+  targetsType: "NUMBERS",
+  wiresLength: 6,
 
   backgroundImg: "",
   panelBackgroundImg: "images/box_background_basic.jpg",
@@ -19,9 +26,6 @@ export const DEFAULT_APP_SETTINGS = {
   wire: iconMap.jack,
 };
 
-export const CONTROL_PANEL_SCREEN = "control_panel";
-export const KEYPAD_SCREEN = "keypad";
-
 export const ESCAPP_CLIENT_SETTINGS = {
   imagesPath: "./images/",
 };
@@ -33,7 +37,47 @@ export const THEMES = {
   RETRO: "RETRO",
 };
 
-export const ICONS = ["circle", "triangle", "square", "pentagon", "star", "hexagon"];
+export const TYPES = {
+  LETTERS: "LETTERS",
+  NUMBERS: "NUMBERS",
+  SHAPES: "SHAPES",
+  COLORED_SHAPES: "COLORED SHAPES",
+  COLORS: "COLORS",
+  CUSTOM: "CUSTOM",
+};
+
+export const ICONS = [
+  "Circle",
+  "Triangle",
+  "Square",
+  "Pentagon",
+  "Star",
+  "Hexagon",
+  "Clubs",
+  "Diamonds",
+  "Hearts",
+  "Spades",
+  "Moon",
+  "Puzzle",
+  "Sun",
+  "Rhombus",
+];
+export const COLORS = [
+  "Red",
+  "Green",
+  "Blue",
+  "Yellow",
+  "Orange",
+  "Pink",
+  "Cyan",
+  "Purple",
+  "Brown",
+  "Black",
+  "Gray",
+  "White",
+  "Turquoise",
+  "Lime",
+];
 
 export const THEME_ASSETS = {
   [THEMES.RETRO]: {
