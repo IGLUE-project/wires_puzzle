@@ -27,6 +27,7 @@ $bg-color: #1d4d84;
   transition-duration: 0.3s;
   transition-property: box-shadow;
 }
+
 .panel:focus,
 .panel:active,
 .panel:hover {
@@ -46,7 +47,6 @@ $bg-color: #1d4d84;
   box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.4), inset -3px -3px 8px rgba(255, 255, 255, 0.2);
   margin-bottom: -20px;
   z-index: 10;
-
   .inner-box {
     width: 250px;
     height: 100px;

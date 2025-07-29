@@ -11,7 +11,6 @@ export const DEFAULT_APP_SETTINGS = {
   wiresType: "NUMBERS",
   targetsType: "NUMBERS",
   wiresLength: 6,
-
   backgroundImg: "",
   panelBackgroundImg: "images/box_background_basic.jpg",
   connectionImg: "images/female-jack.png",
@@ -26,22 +25,18 @@ export const DEFAULT_APP_SETTINGS = {
   wire: iconMap.jack,
 };
 
-export const ESCAPP_CLIENT_SETTINGS = {
-  imagesPath: "./images/",
-};
-
 export const THEMES = {
-  BASIC: "BASIC",
-  FUTURISTIC: "FUTURISTIC",
   STANDARD: "STANDARD",
   RETRO: "RETRO",
+  FUTURISTIC: "FUTURISTIC",
+  BASIC: "BASIC",
 };
 
 export const TYPES = {
   LETTERS: "LETTERS",
   NUMBERS: "NUMBERS",
   SHAPES: "SHAPES",
-  COLORED_SHAPES: "COLORED SHAPES",
+  COLORED_SHAPES: "COLORED_SHAPES",
   COLORS: "COLORS",
   CUSTOM: "CUSTOM",
 };
@@ -94,20 +89,6 @@ export const THEME_ASSETS = {
     connectionAudio: "sounds/connection.wav",
     wire: iconMap.rope,
   },
-  [THEMES.BASIC]: {
-    backgroundImg: "images/basic_wires_puzzle_bg.jpg",
-    panelBackgroundImg: "images/box_background_basic.jpg",
-    connectionImg: "images/female-jack.png",
-    switchOnImg: "images/basic_switch_on.png",
-    switchOffImg: "images/basic_switch_off.png",
-    wireAudio: "sounds/pick-wire.wav",
-    dropWireAudio: "sounds/plug-wire.mp3",
-    switchAudio: "sounds/switch1.wav",
-    switchDownAudio: "sounds/switch2.wav",
-    failAudio: "sounds/fail-connection.wav",
-    connectionAudio: "sounds/connection.wav",
-    wire: iconMap.jack,
-  },
   [THEMES.STANDARD]: {
     backgroundImg: "images/basic_wires_puzzle_bg.jpg",
     panelBackgroundImg: "images/box_background_basic.jpg",
@@ -136,4 +117,8 @@ export const THEME_ASSETS = {
     connectionAudio: "sounds/connection.wav",
     wire: iconMap.jack,
   },
+};
+
+export const ESCAPP_CLIENT_SETTINGS = {
+  imagesPath: "./images/",
 };

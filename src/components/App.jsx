@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import "./../assets/scss/app.scss";
-import "./../assets/scss/modal.scss";
 
 import { COLORS, DEFAULT_APP_SETTINGS, ESCAPP_CLIENT_SETTINGS, ICONS, THEME_ASSETS, TYPES } from "../constants/constants.jsx";
 import MainScreen from "./MainScreen.jsx";
@@ -97,6 +96,9 @@ export default function App() {
   function processAppSettings(_appSettings) {
     if (typeof _appSettings !== "object") {
       _appSettings = {};
+    }
+    if((typeof _appSettings.skin === "undefined")&&(typeof DEFAULT_APP_SETTINGS.skin === "string")){
+      _appSettings.skin = DEFAULT_APP_SETTINGS.skin;
     }
 
     let skinSettings = THEME_ASSETS[_appSettings.skin] || {};

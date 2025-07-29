@@ -213,7 +213,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     // Dibuja un rectángulo
     function drawRect(color, x, y, w, h) {
       // fill según el tema
-      if (config.skin === THEMES.BASIC || config.skin === THEMES.STANDARD) {
+      if (config.skin === THEMES.STANDARD) {
         ctx.fillStyle = "#2d1f1c";
         ctx.strokeStyle = "black";
       } else if (config.skin === THEMES.FUTURISTIC) {

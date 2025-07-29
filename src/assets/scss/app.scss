@@ -11,6 +11,18 @@ div.screen_wrapper {
   overflow: hidden;
 }
 
+body,
+html {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #222;
+  background: transparent;
+}
+
 .main-background {
   height: 100vh;
   width: 100%;
@@ -18,11 +30,6 @@ div.screen_wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-html,
-body {
-  background: transparent;
 }
 
 .screen_wrapper {
@@ -34,9 +41,6 @@ body {
     animation: 1s fadeOut;
     animation-fill-mode: forwards;
   }
-}
-
-.screen_wrapper {
   transition: opacity 700ms ease-in;
 }
 
@@ -48,6 +52,7 @@ body {
     visibility: visible;
   }
 }
+
 @keyframes fadeOut {
   99% {
     visibility: visible;
