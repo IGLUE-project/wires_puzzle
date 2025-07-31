@@ -5,46 +5,56 @@ export let ESCAPP_APP_SETTINGS = {
   skin: "RETRO", //skin can be "STANDARD", "RETRO", or "FUTURISTIC".
   // backgroundImg: "NONE", //background can be "NONE" or a URL.
   actionWhenLoadingIfSolved: true,
-  wiresType: "COLORS", //wiresType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED_SHAPES", "COLORS" or "CUSTOM".
-  targetsType: "COLORS", //targetsType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED SHAPES", "COLORS" or "CUSTOM".
+
   wiresLength: 6, //the number of wires and targets.
+  wiresColor: "", //color if MONOCHROME (optional setting)
+  sourcesType: "COLORED_SHAPES", //sourcesType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED_SHAPES" or "CUSTOM".
+  wiresType: "COLORED", //wiresType can be "COLORED", "MONOCHROME" or "CUSTOM".
+  targetsType: "NUMBERS", //targetsType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED_SHAPES", or "CUSTOM".
 
   // customWires: [
   //   {
   //     color: "#91933D",
-  //     areaColor: "",
+  //   },
+  //   {
+  //     color: "#3d4a93ff",
+  //   },
+  //   {
+  //     color: "#91933D",
+  //   },
+  //   {
+  //     color: "#91933D",
+  //   },
+  //   {
+  //     color: "#91933D",
+  //   },
+  //   {
+  //     color: "#91933D",
+  //   },
+  // ],
+
+  // customSources: [
+  //   {
   //     label: "👽",
   //     image: "",
   //   },
   //   {
-  //     color: "#645B90",
-  //     areaColor: "",
   //     label: "cable 1",
-  //     image: "images/estrella.svg",
   //   },
   //   {
-  //     color: "#9C5425",
-  //     areaColor: "#0021c7",
   //     label: "cable 2",
   //     image: "",
   //   },
   //   {
-  //     color: "#CD717C",
-  //     areaColor: "",
   //     label: "cable 3",
   //     image: "",
   //     ico: "Square",
-  //     colorIco: "purple",
   //   },
   //   {
-  //     color: "#9C5425",
-  //     areaColor: "#0021c7",
   //     label: "cable 2",
   //     image: "",
   //   },
   //   {
-  //     color: "#CD717C",
-  //     areaColor: "",
   //     label: "cable 3",
   //     image: "",
   //     ico: "Square",
@@ -53,35 +63,29 @@ export let ESCAPP_APP_SETTINGS = {
   // ],
   // customTargets: [
   //   {
-  //     areaColor: "#3abf19",
   //     label: "5",
   //     image: "",
   //     ico: "Triangle",
   //   },
   //   {
-  //     areaColor: "#c70000",
   //     label: "target 1",
   //     image: "",
   //   },
   //   {
-  //     areaColor: "#0021c7",
   //     label: "target 2",
-  //     image: "images/circulo.png",
+  //     image: "",
   //   },
   //   {
-  //     areaColor: "#c700b5",
   //     label: "target 3",
   //     image: "",
   //     ico: "Square",
   //     colorIco: "red",
   //   },
   //   {
-  //     areaColor: "#c700b5",
   //     label: "target 3",
   //     image: "",
   //   },
   //   {
-  //     areaColor: "#c700b5",
   //     label: "target 3",
   //     image: "",
   //   },

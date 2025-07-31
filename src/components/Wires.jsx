@@ -40,14 +40,22 @@ const preloadImages = async (wires, targets, theme) => {
     ...wires.map((wire, i) => {
       const wireImagePromise = loadSvg(theme.wire, withOpacity(wire.color, opacity), i).then(() => {
         if (wire.image) return loadImage(wire.image, i + "img");
-        else if (wire.ico) return loadSvg(iconMap[wire.ico], withOpacity(wire.colorIco, opacity), i + "ico");
+        else if (wire.ico) {
+          let color = wire.colorIco;
+          if (theme.skin === THEMES.FUTURISTIC && !color) color = "white";
+          return loadSvg(iconMap[wire.ico], withOpacity(color, opacity), i + "ico");
+        }
         Promise.resolve();
       });
       return wireImagePromise;
     }),
     ...targets.map((target, i) => {
       if (target.image) return loadImage(target.image, i + "img target");
-      else if (target.ico) return loadSvg(iconMap[target.ico], withOpacity(target.colorIco, opacity), i + "ico target");
+      else if (target.ico) {
+        let color = target.colorIco;
+        if (theme.skin === THEMES.FUTURISTIC && !color) color = "white";
+        return loadSvg(iconMap[target.ico], withOpacity(color, opacity), i + "ico target");
+      }
       Promise.resolve();
     }),
   ]);

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import "./../assets/scss/app.scss";
 
-import { COLORS, DEFAULT_APP_SETTINGS, ESCAPP_CLIENT_SETTINGS, ICONS, THEME_ASSETS, TYPES } from "../constants/constants.jsx";
+import { COLORS, DEFAULT_APP_SETTINGS, ESCAPP_CLIENT_SETTINGS, ICONS, THEME_ASSETS, TYPES, WIRE_TYPES } from "../constants/constants.jsx";
 import MainScreen from "./MainScreen.jsx";
 
 import { GlobalContext } from "./GlobalContext.jsx";
@@ -97,7 +97,7 @@ export default function App() {
     if (typeof _appSettings !== "object") {
       _appSettings = {};
     }
-    if((typeof _appSettings.skin === "undefined")&&(typeof DEFAULT_APP_SETTINGS.skin === "string")){
+    if (typeof _appSettings.skin === "undefined" && typeof DEFAULT_APP_SETTINGS.skin === "string") {
       _appSettings.skin = DEFAULT_APP_SETTINGS.skin;
     }
 
@@ -116,12 +116,28 @@ export default function App() {
     }
 
     _appSettings.wires =
-      _appSettings.wiresType === TYPES.CUSTOM ? _appSettings.customWires : createResource(_appSettings.wiresType, _appSettings.wiresLength);
+      _appSettings.sourcesType === TYPES.CUSTOM
+        ? _appSettings.customSources
+        : createResource(_appSettings.sourcesType, _appSettings.wiresLength);
     _appSettings.targets =
       _appSettings.targetsType === TYPES.CUSTOM
         ? _appSettings.customTargets
         : createResource(_appSettings.targetsType, _appSettings.wiresLength);
 
+    for (let i = 0; i < _appSettings.wires.length; i++) {
+      let wire = _appSettings.wires[i];
+      switch (_appSettings.wiresType) {
+        case WIRE_TYPES.COLORED:
+          wire.color = wire.color || COLORS[i % COLORS.length] || "";
+          break;
+        case WIRE_TYPES.CUSTOM:
+          wire.color = _appSettings.customWires[i] ? _appSettings.customWires[i].color || "" : "";
+          break;
+        case WIRE_TYPES.MONOCHROME:
+          wire.color = _appSettings.wiresColor;
+          break;
+      }
+    }
     //Change HTTP protocol to HTTPs in URLs if necessary
     _appSettings = Utils.checkUrlProtocols(_appSettings);
 
@@ -133,14 +149,11 @@ export default function App() {
     return _appSettings;
   }
 
-  function createResource(type, length) {
+  function createResource(type, length, wireColor) {
     let resource = null;
     switch (type) {
       case TYPES.NUMBERS:
         resource = (_, j) => ({ label: String(j + 1) });
-        break;
-      case TYPES.COLORS:
-        resource = (_, j) => ({ areaColor: COLORS[j % COLORS.length] || "" });
         break;
       case TYPES.SHAPES:
         resource = (_, j) => ({ ico: ICONS[j % ICONS.length] || "" });
@@ -154,11 +167,10 @@ export default function App() {
 
     return Array.from({ length }, (_, j) => {
       const base = resource(_, j);
-      base.color = COLORS[j % COLORS.length] || "";
+      // if (wireColor) base.color = wireColor;
+      // else base.color = COLORS[j % COLORS.length] || "";
       return base;
     });
-
-    return Array.from({ length }, (_, j) => resource(_, j));
   }
 
   const solvePuzzle = (solution) => {

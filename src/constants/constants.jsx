@@ -8,8 +8,11 @@ export const DEFAULT_APP_SETTINGS = {
   customWires: [],
   targets: [],
   customTargets: [],
-  wiresType: "NUMBERS",
+  customSources: [],
+  wiresType: "COLORED",
+  sourcesType: "LETTERS",
   targetsType: "NUMBERS",
+  wiresColor: "",
   wiresLength: 6,
   backgroundImg: "",
   panelBackgroundImg: "images/box_background_basic.jpg",
@@ -29,7 +32,6 @@ export const THEMES = {
   STANDARD: "STANDARD",
   RETRO: "RETRO",
   FUTURISTIC: "FUTURISTIC",
-  BASIC: "BASIC",
 };
 
 export const TYPES = {
@@ -37,7 +39,12 @@ export const TYPES = {
   NUMBERS: "NUMBERS",
   SHAPES: "SHAPES",
   COLORED_SHAPES: "COLORED_SHAPES",
-  COLORS: "COLORS",
+  CUSTOM: "CUSTOM",
+};
+
+export const WIRE_TYPES = {
+  COLORED: "COLORED",
+  MONOCHROME: "MONOCHROME",
   CUSTOM: "CUSTOM",
 };
 
