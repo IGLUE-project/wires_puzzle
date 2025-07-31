@@ -83,11 +83,13 @@ export const COLORS = [
 
 export const THEME_ASSETS = {
   [THEMES.RETRO]: {
-    backgroundImg: "images/ancient_wires_puzzle_bg.jpg",
+    frameImg: "images/ancient_frame.png",
+    backgroundImg: "images/ancient_bg.jpg",
     panelBackgroundImg: "images/box_background_ancient.png",
     connectionImg: "images/rope_svg_end_ancient.svg",
     switchOnImg: "images/ancient_switch_on.png",
     switchOffImg: "images/ancient_switch_off.png",
+    switchBackgroundImg: "images/box_ancient.png",
     wireAudio: "sounds/pick-wire.wav",
     dropWireAudio: "sounds/plug-wire.mp3",
     switchAudio: "sounds/switch1.wav",
@@ -97,6 +99,7 @@ export const THEME_ASSETS = {
     wire: iconMap.rope,
   },
   [THEMES.STANDARD]: {
+    frameImg: "images/basic_frame.png",
     backgroundImg: "images/basic_wires_puzzle_bg.jpg",
     panelBackgroundImg: "images/box_background_basic.jpg",
     connectionImg: "images/female-jack.png",
@@ -111,6 +114,7 @@ export const THEME_ASSETS = {
     wire: iconMap.jack,
   },
   [THEMES.FUTURISTIC]: {
+    frameImg: "images/futuristic_frame.png",
     backgroundImg: "images/futuristic_wires_puzzle_bg.jpg",
     panelBackgroundImg: "images/box_background_futuristic.png",
     connectionImg: "images/female-jack.png",

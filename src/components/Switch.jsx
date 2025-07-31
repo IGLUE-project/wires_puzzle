@@ -34,11 +34,9 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
   return (
     <div
       className="Switch"
-      id={`switch-${theme.name}`}
       style={{
         height: size.height * 0.1,
-        marginTop: size.height * 0.04,
-        backgroundImage: `url(${theme.switchContainerImg})`,
+        marginTop: size.height * 0.055,
       }}
     >
       <div className="led-box" style={{ marginTop: -size.height * 0.04, height: size.height * 0.04 }}>

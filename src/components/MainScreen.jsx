@@ -10,6 +10,26 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
     height: window.innerHeight,
   });
 
+  let marginLeft = 0.035;
+  let marginTop = 0.04;
+  let fWidth = 1.02;
+  let fHeight = 1.08;
+
+  switch (config.skin) {
+    case "RETRO":
+      marginLeft = 0.06;
+      marginTop = 0.055;
+      fWidth = 0.975;
+      fHeight = 0.945;
+      break;
+    case "FUTURISTIC":
+      marginLeft = 0.035;
+      marginTop = -0.01;
+      fWidth = 0.9;
+      fHeight = 0.8;
+      break;
+  }
+
   useEffect(() => {
     if (config.wires && config.wires.length > 0) {
       setConnections(config.wires.map(() => null));
@@ -58,15 +78,36 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
           backgroundImage: config.backgroundImg ? `url(${config.backgroundImg})` : {},
           height: "100%",
           width: "100%",
-          gap: size.width * 0.024,
         }}
       >
-        <div className="wires" style={{ marginLeft: size.height * 0.05 + size.width * 0.024, marginTop: size.height * 0.02 }}>
+        <div className="wires" style={{ marginLeft: -size.height * marginLeft + size.width * 0.024, marginTop: -size.height * marginTop }}>
           {connections.length > 0 && (
             <FixWiringGame config={config} connections={connections} setConnections={setConnections} size={size} solved={solved} />
           )}
         </div>
-        <Switch solved={solved} onClick={click} solvedTrigger={solvedTrigger} theme={config} size={size} />
+        <div
+          style={{
+            height: size.height * 0.18,
+            width: size.height * 0.18,
+            marginLeft: size.width * 0.76,
+            position: "absolute",
+            zIndex: 20,
+            backgroundImage: `url(${config.switchBackgroundImg})`,
+            backgroundSize: "cover",
+          }}
+        >
+          <Switch solved={solved} onClick={click} solvedTrigger={solvedTrigger} theme={config} size={size} />
+        </div>
+        <img
+          style={{
+            position: "absolute",
+            pointerEvents: "none",
+            height: size.height * fHeight,
+            zIndex: 10,
+            width: size.width * fWidth,
+          }}
+          src={config.frameImg}
+        />
       </div>
     </div>
   );

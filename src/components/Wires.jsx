@@ -107,8 +107,10 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     const targets = config.targets;
     //controla el cable que estás arrastrando
     let selectedWireIndex = -1;
+    //area de el switch
+    const switchAreaWidth = canvasWidth * 0.125;
     //area de los cables y los targets dependiendo del numero de cables y tamaño de pantalla
-    const WAWidth = canvasWidth / wires.length;
+    const WAWidth = (canvasWidth - switchAreaWidth) / wires.length;
     const WAHeight = canvasHeight * 0.2;
 
     //Variables que dependen del tamaño de la pantalla y del numero de cables
@@ -128,6 +130,9 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
       // Imagen de fondo del canvas
       ctx.drawImage(backgroundImg, 0, 0, canvasWidth, canvasHeight);
+
+      // Area de el switch
+      drawRect("", WAWidth * wires.length, 0, switchAreaWidth, canvasHeight);
 
       // Dibuja los cuadros de abajo y los cables conectados
       wires.forEach((wire, i) => {
@@ -222,7 +227,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     function drawRect(color, x, y, w, h) {
       // fill según el tema
       if (config.skin === THEMES.STANDARD) {
-        ctx.fillStyle = "#2d1f1c";
+        ctx.fillStyle = "#3b312fff";
         ctx.strokeStyle = "black";
       } else if (config.skin === THEMES.FUTURISTIC) {
         ctx.fillStyle = "#12102d";
