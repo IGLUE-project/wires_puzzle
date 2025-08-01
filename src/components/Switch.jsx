@@ -11,16 +11,17 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
         setError(true);
         setTimeout(() => {
           setError(false);
-
           setActivo(false);
           document.getElementById("audio_switch2").play();
-          document.getElementById("audio_fail-connection").play();
+          document.getElementById("audio_fail").play();
         }, 500);
       } else {
-        document.getElementById("audio_connection").play();
-        setTimeout(() => {
-          document.getElementById("audio_connection_loop").play();
-        }, 2000);
+        document.getElementById("audio_win").play();
+        if(theme === "RETRO"){
+          setTimeout(() => {
+            document.getElementById("audio_fire_loop").play();
+          }, 2000);
+        }
         setActivo(true);
       }
     }
@@ -62,9 +63,9 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
       )}
 
       <img className="switch-img" src={activo ? theme.switchOnImg : theme.switchOffImg} alt="" onClick={togglePalanca} draggable="false" />
-      <audio id="audio_connection_loop" src={theme.loopConnectionAudio} autostart="false" preload="auto" loop />
-      <audio id="audio_connection" src={theme.connectionAudio} autostart="false" preload="auto" />
-      <audio id="audio_fail-connection" src={theme.failAudio} autostart="false" preload="auto" />
+      {theme === "RETRO" && ( <audio id="audio_fire_loop" src={theme.fireLoopAudio} autostart="false" preload="auto" loop /> )}
+      <audio id="audio_win" src={theme.winAudio} autostart="false" preload="auto" />
+      <audio id="audio_fail" src={theme.failAudio} autostart="false" preload="auto" />
       <audio id="audio_switch1" src={theme.switchAudio} autostart="false" preload="auto" />
       <audio id="audio_switch2" src={theme.switchDownAudio} autostart="false" preload="auto" />
     </div>

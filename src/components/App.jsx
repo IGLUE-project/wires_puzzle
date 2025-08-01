@@ -115,15 +115,7 @@ export default function App() {
       _appSettings.message = I18n.getTrans("i.message");
     }
 
-    _appSettings.wires =
-      _appSettings.sourcesType === TYPES.CUSTOM
-        ? _appSettings.customSources
-        : createResource(_appSettings.sourcesType, _appSettings.wiresLength);
-    _appSettings.targets =
-      _appSettings.targetsType === TYPES.CUSTOM
-        ? _appSettings.customTargets
-        : createResource(_appSettings.targetsType, _appSettings.wiresLength);
-
+    _appSettings.wires = Array.from({ length: _appSettings.wiresLength }, () => ({}));
     for (let i = 0; i < _appSettings.wires.length; i++) {
       let wire = _appSettings.wires[i];
       switch (_appSettings.wiresType) {
@@ -138,6 +130,13 @@ export default function App() {
           break;
       }
     }
+    _appSettings.sources = _appSettings.sourcesType === TYPES.CUSTOM
+        ? _appSettings.customSources
+        : createResource(_appSettings.sourcesType, _appSettings.wiresLength);
+    _appSettings.targets = _appSettings.targetsType === TYPES.CUSTOM
+        ? _appSettings.customTargets
+        : createResource(_appSettings.targetsType, _appSettings.wiresLength);
+
     //Change HTTP protocol to HTTPs in URLs if necessary
     _appSettings = Utils.checkUrlProtocols(_appSettings);
 
@@ -150,6 +149,7 @@ export default function App() {
   }
 
   function createResource(type, length, wireColor) {
+    if (type === TYPES.NONE) return Array.from({ length: length }, () => ({}));
     let resource = null;
     switch (type) {
       case TYPES.NUMBERS:

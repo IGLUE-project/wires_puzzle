@@ -8,7 +8,7 @@ let mouseX = 0;
 let mouseY = 0;
 
 // Preload images and SVGs
-const preloadImages = async (wires, targets, theme) => {
+const preloadImages = async (wires, sources, targets, theme) => {
   const images = {};
   const opacity = theme.skin === THEMES.RETRO ? 0.8 : 1; // Opacity for retro theme
 
@@ -39,15 +39,17 @@ const preloadImages = async (wires, targets, theme) => {
   await Promise.all([
     ...wires.map((wire, i) => {
       const wireImagePromise = loadSvg(theme.wire, withOpacity(wire.color, opacity), i).then(() => {
-        if (wire.image) return loadImage(wire.image, i + "img");
-        else if (wire.ico) {
-          let color = wire.colorIco;
-          if (theme.skin === THEMES.FUTURISTIC && !color) color = "white";
-          return loadSvg(iconMap[wire.ico], withOpacity(color, opacity), i + "ico");
-        }
         Promise.resolve();
       });
       return wireImagePromise;
+    }),
+    ...sources.map((wire, i) => {
+      if (wire.image) return loadImage(wire.image, i + "img");
+      if (wire.ico) {
+        let color = wire.colorIco;
+        if (theme.skin === THEMES.FUTURISTIC && !color) color = "white";
+        return loadSvg(iconMap[wire.ico], withOpacity(color, opacity), i + "ico");
+      }
     }),
     ...targets.map((target, i) => {
       if (target.image) return loadImage(target.image, i + "img target");
@@ -76,7 +78,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
 
   useEffect(() => {
     const loadIcons = async () => {
-      const images = await preloadImages(config.wires, config.targets, config);
+      const images = await preloadImages(config.wires, config.sources, config.targets, config);
       setPreloadedImages(images);
     };
 
@@ -101,9 +103,11 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
-    //cables de abajo
+    //cables
     const wires = config.wires;
-    //areas de arriba
+    //sources (bottom areas)
+    const sources = config.sources;
+    //targets (upper areas)
     const targets = config.targets;
     //controla el cable que estás arrastrando
     let selectedWireIndex = -1;
@@ -162,9 +166,13 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
             );
           }
         }
+      });
+
+      sources.forEach((wire, i) => {
         //Dibuja el texto o la imagen de la etiqueta
         drawLabel(wire, i, canvasHeight - WAHeight / 2, "");
       });
+
       // Dibujar los cuadros de arriba
       targets.forEach((target, i) => {
         //Dibuja el area de cada uno de los cuadros de arriba

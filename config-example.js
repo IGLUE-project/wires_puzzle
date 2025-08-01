@@ -2,16 +2,17 @@
 
 export let ESCAPP_APP_SETTINGS = {
   //Settings that can be specified by the authors
-  skin: "RETRO", //skin can be "STANDARD", "RETRO", or "FUTURISTIC".
-  // backgroundImg: "NONE", //background can be "NONE" or a URL.
+  skin: "STANDARD", //skin can be "STANDARD", "RETRO", or "FUTURISTIC"
+  // backgroundImg: "NONE", //backgroundImg can be "NONE" or a URL.
   actionWhenLoadingIfSolved: true,
 
   wiresLength: 6, //the number of wires and targets.
-  wiresColor: "", //color if MONOCHROME (optional setting)
-  sourcesType: "COLORED_SHAPES", //sourcesType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED_SHAPES" or "CUSTOM".
   wiresType: "COLORED", //wiresType can be "COLORED", "MONOCHROME" or "CUSTOM".
-  targetsType: "NUMBERS", //targetsType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED_SHAPES", or "CUSTOM".
+  //wiresColor: "black", //color of the wires if wiresType is MONOCHROME
+  sourcesType: "NONE", //sourcesType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED_SHAPES", "NONE" or "CUSTOM".
+  targetsType: "NONE", //targetsType can be "LETTERS", "NUMBERS", "SHAPES", "COLORED_SHAPES", "NONE" or "CUSTOM".
 
+  //If wiresType is CUSTOM, customWires should be specified.
   // customWires: [
   //   {
   //     color: "#91933D",
@@ -33,6 +34,7 @@ export let ESCAPP_APP_SETTINGS = {
   //   },
   // ],
 
+  //If sourcesType is CUSTOM, customSources should be specified.
   // customSources: [
   //   {
   //     label: "👽",
@@ -61,6 +63,8 @@ export let ESCAPP_APP_SETTINGS = {
   //     colorIco: "purple",
   //   },
   // ],
+
+  //If targetsType is CUSTOM, customTargets should be specified.
   // customTargets: [
   //   {
   //     label: "5",
