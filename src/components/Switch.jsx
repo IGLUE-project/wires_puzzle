@@ -18,6 +18,9 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
         }, 500);
       } else {
         document.getElementById("audio_connection").play();
+        setTimeout(() => {
+          document.getElementById("audio_connection_loop").play();
+        }, 2000);
         setActivo(true);
       }
     }
@@ -39,14 +42,27 @@ const Switch = ({ onClick, solved, solvedTrigger, theme, size }) => {
         marginTop: size.height * 0.055,
       }}
     >
-      <div className="led-box" style={{ marginTop: -size.height * 0.04, height: size.height * 0.04 }}>
-        <div
-          style={{ height: size.height * 0.03, width: size.height * 0.03 }}
-          className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}
-        ></div>
-      </div>
-      <img className="switch-img" src={activo ? theme.switchOnImg : theme.switchOffImg} alt="" onClick={togglePalanca} draggable="false" />
+      {theme.skin === "RETRO" ? (
+        <div className="led-box" style={{ marginTop: -size.height * 0.28, height: size.height * 0.28 }}>
+          <img
+            draggable="false"
+            style={{ height: size.height * 0.22, width: size.height * 0.22, objectFit: "contain" }}
+            className="torch"
+            src={solved ? theme.torchOnImg : theme.torchOffImg}
+            alt=""
+          />
+        </div>
+      ) : (
+        <div className="led-box" style={{ marginTop: -size.height * 0.06, height: size.height * 0.06 }}>
+          <div
+            style={{ height: size.height * 0.03, width: size.height * 0.03 }}
+            className={solved ? "led-green" : activo ? (error ? "led-red" : "led-load") : "led-off"}
+          ></div>
+        </div>
+      )}
 
+      <img className="switch-img" src={activo ? theme.switchOnImg : theme.switchOffImg} alt="" onClick={togglePalanca} draggable="false" />
+      <audio id="audio_connection_loop" src={theme.loopConnectionAudio} autostart="false" preload="auto" loop />
       <audio id="audio_connection" src={theme.connectionAudio} autostart="false" preload="auto" />
       <audio id="audio_fail-connection" src={theme.failAudio} autostart="false" preload="auto" />
       <audio id="audio_switch1" src={theme.switchAudio} autostart="false" preload="auto" />

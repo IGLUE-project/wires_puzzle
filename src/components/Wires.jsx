@@ -233,7 +233,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
         ctx.fillStyle = "#12102d";
         ctx.strokeStyle = "#8863a3";
       } else if (config.skin === THEMES.RETRO) {
-        ctx.fillStyle = "#7f482f";
+        ctx.fillStyle = "#7e452e";
         ctx.strokeStyle = "black";
       } else {
         ctx.fillStyle = "#2d1f1c";

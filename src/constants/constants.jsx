@@ -84,18 +84,20 @@ export const COLORS = [
 export const THEME_ASSETS = {
   [THEMES.RETRO]: {
     frameImg: "images/ancient_frame.png",
+    torchOffImg: "images/torch_off.jpg",
+    torchOnImg: "images/torch_on.gif",
     backgroundImg: "images/ancient_bg.jpg",
     panelBackgroundImg: "images/box_background_ancient.png",
     connectionImg: "images/rope_svg_end_ancient.svg",
     switchOnImg: "images/ancient_switch_on.png",
     switchOffImg: "images/ancient_switch_off.png",
-    switchBackgroundImg: "images/box_ancient.png",
     wireAudio: "sounds/pick-wire.wav",
     dropWireAudio: "sounds/plug-wire.mp3",
     switchAudio: "sounds/switch1.wav",
     switchDownAudio: "sounds/switch2.wav",
     failAudio: "sounds/plug-wire.mp3",
-    connectionAudio: "sounds/connection.wav",
+    connectionAudio: "sounds/torch.wav",
+    loopConnectionAudio: "sounds/firesound.wav",
     wire: iconMap.rope,
   },
   [THEMES.STANDARD]: {
