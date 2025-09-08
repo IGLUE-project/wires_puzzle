@@ -116,16 +116,17 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     //area de los cables y los targets dependiendo del numero de cables y tamaño de pantalla
     const WAWidth = (canvasWidth - switchAreaWidth) / wires.length;
     const WAHeight = canvasHeight * 0.2;
+    const baseRatio = WAHeight * 2;
 
     //Variables que dependen del tamaño de la pantalla y del numero de cables
-    const fontSize = `${WAWidth / 8}px Arial`;
-    const wireWidth = WAWidth * 0.05; // Grosor del cable
-    const labelImgSize = WAWidth / 6; // Tamaño de la imagen de la etiqueta (areas)
-    const jackSizeH = WAWidth * 0.3;
-    const jackSizeW = WAWidth * 0.4;
-    const connectorImgSize = WAWidth / 5; // Tamaño de la imagen del conector del area de arriba
-    const connectedJackWidth = WAWidth * 0.1; // Ancho del jack conectado (rectangulo para simular el jack conectado)
-    const connectedJackHeight = WAWidth * 0.2; // Alto del jack conectado (rectangulo para simular el jack conectado)
+    const fontSize = `${baseRatio / 8}px Arial`;
+    const wireWidth = baseRatio * 0.05; // Grosor del cable
+    const labelImgSize = baseRatio / 6; // Tamaño de la imagen de la etiqueta (areas)
+    const jackSizeH = baseRatio * 0.3;
+    const jackSizeW = baseRatio * 0.4;
+    const connectorImgSize = baseRatio / 5; // Tamaño de la imagen del conector del area de arriba
+    const connectedJackWidth = baseRatio * 0.1; // Ancho del jack conectado (rectangulo para simular el jack conectado)
+    const connectedJackHeight = baseRatio * 0.2; // Alto del jack conectado (rectangulo para simular el jack conectado)
 
     // Dibuja el juego
     function drawGame() {
@@ -152,7 +153,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
             i * WAWidth + WAWidth / 2,
             canvasHeight - WAHeight,
             connections[i] * WAWidth + WAWidth / 2,
-            WAHeight + jackSize
+            WAHeight + jackSize,
           );
           // Si el cable no está conectado dibuja el jack en el area de abajo
         } else {
@@ -162,7 +163,7 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
               i * WAWidth + WAWidth / 2 - jackSizeW / 2,
               canvasHeight - WAHeight - jackSizeH / 2,
               jackSizeW,
-              jackSizeH
+              jackSizeH,
             );
           }
         }
@@ -221,10 +222,16 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
             selectedWireIndex * WAWidth + WAWidth / 2,
             canvasHeight - WAHeight,
             mouseX,
-            mouseY
+            mouseY,
           );
           //Dibuja la imagen del jack en la punta del cable arrastrandose
-          ctx.drawImage(preloadedImages[selectedWireIndex], mouseX - jackSizeW / 2, mouseY - jackSizeH, jackSizeW, jackSizeH);
+          ctx.drawImage(
+            preloadedImages[selectedWireIndex],
+            mouseX - jackSizeW / 2,
+            mouseY - jackSizeH,
+            jackSizeW,
+            jackSizeH,
+          );
         } catch (e) {
           console.error("Error al dibujar la línea:", e);
         }
@@ -371,10 +378,8 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
     function loop() {
       requestAnimationFrame(loop);
       // Si se ha resuelto el puzzle, se deja de actualizar el juego
-      if (!solved) drawGame();
-      else {
-        clearEvents();
-      }
+      drawGame();
+      if (solved) clearEvents();
     }
 
     function clearEvents() {
