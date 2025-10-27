@@ -2,7 +2,7 @@ import { iconMap } from "../icons/wiresIcons";
 
 export const DEFAULT_APP_SETTINGS = {
   skin: "STANDARD",
-  backgroundImg: "images/background_standard.jpg",
+  backgroundImg: "images/background_standard.png",
   actionWhenLoadingIfSolved: true,
   wiresLength: 6,
   wiresType: "COLORED",
