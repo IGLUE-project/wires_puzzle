@@ -20,9 +20,9 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
     case "RETRO":
       marginLeft = 0.05;
       marginTop = 0.055;
-      fWidth = 0.978;
+      fWidth = 1;
       fHeight = 0.945;
-      switchMargin = 0.77;
+      switchMargin = 0.76;
 
       break;
     case "FUTURISTIC":
