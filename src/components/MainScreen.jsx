@@ -21,7 +21,7 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
       marginLeft = 0.05;
       marginTop = 0.055;
       fWidth = 1;
-      fHeight = 0.945;
+      fHeight = 1;
       switchMargin = 0.76;
 
       break;
