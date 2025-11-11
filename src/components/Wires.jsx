@@ -41,7 +41,12 @@ const preloadImages = async (wires, sources, targets, theme) => {
       const wireImagePromise = loadSvg(theme.wire, withOpacity(wire.color, opacity), i).then(() => {
         Promise.resolve();
       });
-      return wireImagePromise;
+      const color = theme.wiresType === "MONOCHROME" ? theme.wiresColor : "#93642F";
+      const wireEndImagePromise =
+        typeof theme.connectionImg !== "string"
+          ? loadSvg(theme.connectionImg, color, i + "end")
+          : loadImage(theme.connectionImg, i + "end");
+      return Promise.all([wireImagePromise, wireEndImagePromise]);
     }),
     ...sources.map((wire, i) => {
       if (wire.image) return loadImage(wire.image, i + "img");
@@ -69,8 +74,6 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
   const canvasRef = useRef(null);
   const [preloadedImages, setPreloadedImages] = useState(null);
 
-  const connectorImg = new Image();
-  connectorImg.src = config.connectionImg;
   const backgroundImg = new Image();
   backgroundImg.src = config.panelBackgroundImg;
   const pickWireAudio = document.getElementById("audio_pick-wire");
@@ -182,7 +185,13 @@ const FixWiringGame = ({ config, connections, setConnections, size, solved }) =>
         const xPosition = i * WAWidth + WAWidth / 2;
         const imgOffset = connectorImgSize / 2;
         //Dibuja el conector del area de arriba
-        ctx.drawImage(connectorImg, xPosition - imgOffset, WAHeight - imgOffset, connectorImgSize, connectorImgSize);
+        ctx.drawImage(
+          preloadedImages[i + "end"],
+          xPosition - imgOffset,
+          WAHeight - imgOffset,
+          connectorImgSize,
+          connectorImgSize,
+        );
 
         //Dibuja el texto o la imagen de la etiqueta
         drawLabel(target, i, WAHeight / 2, " target");

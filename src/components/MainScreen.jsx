@@ -10,23 +10,28 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
     height: window.innerHeight,
   });
 
-  let marginLeft = 0.035;
+  let marginLeft = 0.041;
   let marginTop = 0.04;
-  let fWidth = 1.02;
+  let fWidth = 1.05;
   let fHeight = 1.08;
+  let switchMargin = 0.772;
 
   switch (config.skin) {
     case "RETRO":
-      marginLeft = 0.06;
+      marginLeft = 0.05;
       marginTop = 0.055;
-      fWidth = 0.975;
+      fWidth = 0.978;
       fHeight = 0.945;
+      switchMargin = 0.77;
+
       break;
     case "FUTURISTIC":
       marginLeft = 0.035;
       marginTop = -0.01;
-      fWidth = 0.9;
+      fWidth = 0.919;
       fHeight = 0.8;
+      switchMargin = 0.77;
+
       break;
   }
 
@@ -80,16 +85,25 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
           width: "100%",
         }}
       >
-        <div className="wires" style={{ marginLeft: -size.height * marginLeft + size.width * 0.024, marginTop: -size.height * marginTop }}>
+        <div
+          className="wires"
+          style={{ marginLeft: -size.height * marginLeft + size.width * 0.024, marginTop: -size.height * marginTop }}
+        >
           {connections.length > 0 && (
-            <FixWiringGame config={config} connections={connections} setConnections={setConnections} size={size} solved={solved} />
+            <FixWiringGame
+              config={config}
+              connections={connections}
+              setConnections={setConnections}
+              size={size}
+              solved={solved}
+            />
           )}
         </div>
         <div
           style={{
             height: size.height * 0.18,
             width: size.height * 0.18,
-            marginLeft: size.width * 0.76,
+            marginLeft: size.width * switchMargin,
             position: "absolute",
             zIndex: 20,
             backgroundImage: `url(${config.switchBackgroundImg})`,

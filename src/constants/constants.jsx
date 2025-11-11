@@ -82,8 +82,7 @@ export const COLORS = [
 ];
 
 export const THEME_ASSETS = {
-  [THEMES.STANDARD]: {
-  },
+  [THEMES.STANDARD]: {},
   [THEMES.RETRO]: {
     wiresColor: "#93642f",
     backgroundImg: "images/background_retro.jpg",
@@ -91,7 +90,7 @@ export const THEME_ASSETS = {
     torchOffImg: "images/torch_off.jpg",
     torchOnImg: "images/torch_on.gif",
     panelBackgroundImg: "images/box_background_retro.png",
-    connectionImg: "images/rope_end_retro.svg",
+    connectionImg: iconMap.ropeEnd,
     switchOnImg: "images/switch_on_retro.png",
     switchOffImg: "images/switch_off_retro.png",
     winAudio: "sounds/torch.wav",
