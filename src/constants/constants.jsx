@@ -93,6 +93,7 @@ export const THEME_ASSETS = {
     connectionImg: iconMap.ropeEnd,
     switchOnImg: "images/switch_on_retro.png",
     switchOffImg: "images/switch_off_retro.png",
+    failAudio: "sounds/fail_retro.wav",
     winAudio: "sounds/torch.wav",
     fireLoopAudio: "sounds/firesound.wav",
     wire: iconMap.rope,
