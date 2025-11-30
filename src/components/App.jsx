@@ -137,7 +137,7 @@ export default function App() {
     _appSettings = Utils.checkUrlProtocols(_appSettings);
 
     //Preload resources (if necessary)
-    Utils.preloadImages([_appSettings.backgroundMessage]);
+    //Utils.preloadImages([_appSettings.backgroundMessage]);
     //Utils.preloadAudios([_appSettings.soundBeep,_appSettings.soundNok,_appSettings.soundOk]); //Preload done through HTML audio tags
     //Utils.preloadVideos(["videos/some_video.mp4"]);
     Utils.log("App settings:", _appSettings);

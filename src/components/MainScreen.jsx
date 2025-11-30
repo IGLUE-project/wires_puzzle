@@ -106,8 +106,6 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
             marginLeft: size.width * switchMargin,
             position: "absolute",
             zIndex: 20,
-            backgroundImage: `url(${config.switchBackgroundImg})`,
-            backgroundSize: "cover",
           }}
         >
           <Switch solved={solved} onClick={click} solvedTrigger={solvedTrigger} theme={config} size={size} />
