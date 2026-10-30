@@ -80,7 +80,6 @@ export default function MainScreen({ config, solvePuzzle, solved, solvedTrigger,
       <div
         className="frame"
         style={{
-          backgroundImage: config.backgroundImg ? `url(${config.backgroundImg})` : {},
           height: "100%",
           width: "100%",
         }}
